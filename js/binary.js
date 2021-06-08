@@ -203,7 +203,7 @@
 /******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
 /******/
 /******/ 	// __webpack_public_path__
-/******/ 	__webpack_require__.p = "/js/";
+/******/ 	__webpack_require__.p = "/binary-static/js/";
 /******/
 /******/ 	// on error function for async loading
 /******/ 	__webpack_require__.oe = function(err) { console.error(err); throw err; };
@@ -38989,7 +38989,7 @@ var binary_desktop_app_id = 14473;
 
 var getAppId = function getAppId() {
     var app_id = null;
-    var user_app_id = '27891'; // you can insert Application ID of your registered application here
+    var user_app_id = ''; // you can insert Application ID of your registered application here
     var config_app_id = window.localStorage.getItem('config.app_id');
     var is_new_app = /\/app\//.test(window.location.pathname);
     if (config_app_id) {
