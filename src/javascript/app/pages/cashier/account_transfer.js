@@ -244,7 +244,7 @@ const AccountTransfer = (() => {
             } else {
                 const req_transfer_between_accounts = BinarySocket.send({ transfer_between_accounts: 1 });
                 const get_account_status            = BinarySocket.send({ get_account_status: 1 });
-                const req_get_limits                = BinarySocket.send({get_limits: 1});
+                const req_get_limits                = BinarySocket.send({ get_limits: 1 });
 
                 Promise.all([req_transfer_between_accounts, get_account_status, req_get_limits]).then(() => {
                     const response_transfer = State.get(['response', 'transfer_between_accounts']);
@@ -262,7 +262,7 @@ const AccountTransfer = (() => {
 
                     const allowed_internal_transfer = response_internal_transfer_limits.allowed;
                     const available_internal_transfer = response_internal_transfer_limits.available;
-                    if(available_internal_transfer === 0) { 
+                    if (available_internal_transfer === 0) {
                         const el_error = getElementById('form_error');
                         elementTextContent(el_error, localize('You can only perform up to [_1] transfers a day. Please try again tomorrow.', allowed_internal_transfer));
                         el_error.setVisibility(1);
