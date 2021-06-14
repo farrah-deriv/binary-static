@@ -19,7 +19,7 @@ const AccountTransfer = (() => {
         parent : 'client_message',
         error  : 'no_account',
         balance: 'not_enough_balance',
-        deposit: 'no_balance',
+        deposit: 'no_balance'
     };
 
     let el_transfer_from,
@@ -244,10 +244,12 @@ const AccountTransfer = (() => {
             } else {
                 const req_transfer_between_accounts = BinarySocket.send({ transfer_between_accounts: 1 });
                 const get_account_status            = BinarySocket.send({ get_account_status: 1 });
+                const req_get_limits                = BinarySocket.send({get_limits: 1});
 
-                Promise.all([req_transfer_between_accounts, get_account_status]).then(() => {
+                Promise.all([req_transfer_between_accounts, get_account_status, req_get_limits]).then(() => {
                     const response_transfer = State.get(['response', 'transfer_between_accounts']);
                     const is_authenticated  = State.getResponse('get_account_status.status').some(state => state === 'authenticated');
+                    const response_internal_transfer_limits = State.getResponse('get_limits.daily_transfers.internal');
 
                     if (hasError(response_transfer)) {
                         return;
@@ -256,6 +258,14 @@ const AccountTransfer = (() => {
                     if (!accounts || !accounts.length) {
                         showError();
                         return;
+                    }
+
+                    const allowed_internal_transfer = response_internal_transfer_limits.allowed;
+                    const available_internal_transfer = response_internal_transfer_limits.available;
+                    if(available_internal_transfer === 0) {
+                        const el_error = getElementById('form_error');
+                        elementTextContent(el_error, localize('You can only perform up to [_1] transfers a day. Please try again tomorrow.', allowed_internal_transfer));
+                        el_error.setVisibility(1);
                     }
 
                     populateAccounts(accounts);
