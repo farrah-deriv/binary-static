@@ -19,7 +19,7 @@ const AccountTransfer = (() => {
         parent : 'client_message',
         error  : 'no_account',
         balance: 'not_enough_balance',
-        deposit: 'no_balance'
+        deposit: 'no_balance',
     };
 
     let el_transfer_from,
@@ -262,7 +262,7 @@ const AccountTransfer = (() => {
 
                     const allowed_internal_transfer = response_internal_transfer_limits.allowed;
                     const available_internal_transfer = response_internal_transfer_limits.available;
-                    if(available_internal_transfer === 0) {
+                    if(available_internal_transfer === 0) { 
                         const el_error = getElementById('form_error');
                         elementTextContent(el_error, localize('You can only perform up to [_1] transfers a day. Please try again tomorrow.', allowed_internal_transfer));
                         el_error.setVisibility(1);
