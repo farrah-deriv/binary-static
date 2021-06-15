@@ -20,6 +20,7 @@ const AccountTransfer = (() => {
         error  : 'no_account',
         balance: 'not_enough_balance',
         deposit: 'no_balance',
+        transfer: 'transfer_not_allowed',
     };
 
     let el_transfer_from,
@@ -263,17 +264,17 @@ const AccountTransfer = (() => {
                     const allowed_internal_transfer = response_internal_transfer_limits.allowed;
                     const available_internal_transfer = response_internal_transfer_limits.available;
                     if (available_internal_transfer === 0) {
-                        const el_error = getElementById('form_error');
-                        elementTextContent(el_error, localize('You can only perform up to [_1] transfers a day. Please try again tomorrow.', allowed_internal_transfer));
-                        el_error.setVisibility(1);
+                        setLoadingVisibility(0);
+                        getElementById(messages.parent).setVisibility(1);
+                        elementTextContent(getElementById('allowed_internal_transfer'), allowed_internal_transfer);
+                        getElementById(messages.transfer).setVisibility(1);
+                    } else {
+                        populateAccounts(accounts);
+                        setLimits(min_amount, is_authenticated).then(() => {
+                            showForm({ is_authenticated });
+                            populateHints();
+                        });
                     }
-
-                    populateAccounts(accounts);
-                    setLimits(min_amount, is_authenticated).then(() => {
-                        showForm({ is_authenticated });
-                        populateHints();
-                    });
-
                 });
             }
         });
