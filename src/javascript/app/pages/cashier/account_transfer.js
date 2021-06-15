@@ -16,10 +16,10 @@ const AccountTransfer = (() => {
     const form_id_hash  = `#${form_id}`;
 
     const messages = {
-        parent : 'client_message',
-        error  : 'no_account',
-        balance: 'not_enough_balance',
-        deposit: 'no_balance',
+        parent  : 'client_message',
+        error   : 'no_account',
+        balance : 'not_enough_balance',
+        deposit : 'no_balance',
         transfer: 'transfer_not_allowed',
     };
 
@@ -261,7 +261,7 @@ const AccountTransfer = (() => {
                         return;
                     }
 
-                    const allowed_internal_transfer = response_internal_transfer_limits.allowed; 
+                    const allowed_internal_transfer = response_internal_transfer_limits.allowed;
                     const available_internal_transfer = response_internal_transfer_limits.available;
                     if (available_internal_transfer === 0) {
                         setLoadingVisibility(0);
