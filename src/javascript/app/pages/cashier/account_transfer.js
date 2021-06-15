@@ -261,7 +261,7 @@ const AccountTransfer = (() => {
                         return;
                     }
 
-                    const allowed_internal_transfer = response_internal_transfer_limits.allowed;
+                    const allowed_internal_transfer = response_internal_transfer_limits.allowed; 
                     const available_internal_transfer = response_internal_transfer_limits.available;
                     if (available_internal_transfer === 0) {
                         setLoadingVisibility(0);
