@@ -1,7 +1,7 @@
+const moment                   = require('moment');
 const BinaryPjax               = require('./binary_pjax');
 const Client                   = require('./client');
 const BinarySocket             = require('./socket');
-const moment           = require('moment');
 const showHidePulser           = require('../common/account_opening').showHidePulser;
 const getCurrencyDisplayCode   = require('../common/currency').getCurrencyDisplayCode;
 const getLandingCompanyValue   = require('../../_common/base/client_base').getLandingCompanyValue;
@@ -358,10 +358,10 @@ const Header = (() => {
             const has_no_tnc_limit = is_svg;
 
             const messages = {
-                cashier_locked          : () => localize('Your cashier is currently locked. Please contact us via live chat to find out how to unlock it.'),
-                system_maintenance      : () => buildMessageHref(localizeKeepPlaceholders('We’re updating our cashier system and it’ll be back online soon. Please see our [_1]status page[_2] for updates.'), 'https://deriv.statuspage.io/'),
-                currency                : () => buildMessage(localizeKeepPlaceholders('Please set your [_1]account currency[_2] to enable deposits and withdrawals.'),                                                                                    'user/set-currency'),
-                unsubmitted             : () => buildMessage(get_account_status.risk_classification === 'high'
+                cashier_locked    : () => localize('Your cashier is currently locked. Please contact us via live chat to find out how to unlock it.'),
+                system_maintenance: () => buildMessageHref(localizeKeepPlaceholders('We’re updating our cashier system and it’ll be back online soon. Please see our [_1]status page[_2] for updates.'), 'https://deriv.statuspage.io/'),
+                currency          : () => buildMessage(localizeKeepPlaceholders('Please set your [_1]account currency[_2] to enable deposits and withdrawals.'),                                                                                    'user/set-currency'),
+                unsubmitted       : () => buildMessage(get_account_status.risk_classification === 'high'
                     ? localizeKeepPlaceholders('Your account has not been authenticated. Please submit your [_1]proof of identity and proof of address[_2] to authenticate your account and request for withdrawals.', 'user/authenticate')
                     : localizeKeepPlaceholders('Your account has not been authenticated. Please submit your [_1]proof of identity and proof of address[_2] to authenticate your account and access your cashier.'), 'user/authenticate'),
                 expired                 : () => localize('The identification documents you submitted have expired. Please submit valid identity documents to unlock Cashier.'),
@@ -386,8 +386,8 @@ const Header = (() => {
                 tnc                     : () => buildMessage(has_no_tnc_limit
                     ? localizeKeepPlaceholders('Please [_1]accept the updated Terms and Conditions[_2].')
                     : localizeKeepPlaceholders('Please [_1]accept the updated Terms and Conditions[_2] to lift your deposit and trading limits.'), 'user/tnc_approvalws'),
-                disabled                : () => localize('Your account is temporarily disabled. Please contact us via live chat to enable deposits and withdrawals again.'),
-                financial_risk_approval : () => localize('Please complete the [_1]Approriateness Test[_2] to access your cashier.'), 
+                disabled               : () => localize('Your account is temporarily disabled. Please contact us via live chat to enable deposits and withdrawals again.'),
+                financial_risk_approval: () => localize('Please complete the [_1]Approriateness Test[_2] to access your cashier.'),
             };
 
             const validations = {
@@ -415,7 +415,7 @@ const Header = (() => {
                 unwelcome               : () => hasStatus('unwelcome'),
                 withdrawal_locked_review: () => hasStatus('withdrawal_locked') && get_account_status.risk_classification === 'high' && !is_fully_authenticated && authentication.document.status === 'pending',
                 withdrawal_locked       : () => hasStatus('withdrawal_locked'),
-                disabled                : () => hasStatus('disabled'),
+                disabled                : () => hasStatus('disabled_status'),
                 financial_risk_approval : () => hasStatus('financial_risk_approval'),
             };
 
