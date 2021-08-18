@@ -373,9 +373,9 @@ const Header = (() => {
                 identity                : () => buildMessage(localizeKeepPlaceholders('Please submit your [_1]proof of identity[_2].'),                                                                                       'user/authenticate'),
                 document                : () => buildMessage(localizeKeepPlaceholders('Please submit your [_1]proof of address[_2].'),                                                                                        'user/authenticate', '?authentication_tab=poa'),
                 excluded_until          : () => localize('You have chosen to exclude yourself from trading on our website until [_1]. If you are unable to place a trade or deposit after your self-exclusion period, please contact us via live chat.', moment(+Client.get('excluded_until') * 1000).format('DD MMM YYYY')),
-                financial_limit         : () => buildMessage(localizeKeepPlaceholders('Your access to Cashier has been temporarily disabled as you have not set your 30-day turnoverlimit. Please go to [_1]Self-exclusion[_2] and set your 30-day turnover limit.'),                                                             'user/security/self_exclusionws'),
+                financial_limit         : () => buildMessage(localizeKeepPlaceholders('Your access to Cashier has been temporarily disabled as you have not set your 30-day turnover limit. Please go to [_1]Self-exclusion[_2] and set your 30-day turnover limit.'),                                                             'user/security/self_exclusionws'),
                 mt5_withdrawal_locked   : () => localize('MT5 withdrawals have been disabled on your account. Please check your email for more details.'),
-                no_withdrawal_or_trading: () => localize('Unfortunately, you can only make deposits. Please contact us via live chat to enable deposits.'),
+                no_withdrawal_or_trading: () => localize('Unfortunately, you can only make deposits. Please contact us via live chat to enable withdrawals.'),
                 required_fields         : () => buildMessage(localizeKeepPlaceholders('Your [_1]personal details[_2] are incomplete. Please go to your account settings and complete your personal details to enable deposits and withdrawals.'),                                                                   'user/settings/detailsws'),
                 residence               : () => buildMessage(localizeKeepPlaceholders('You’ve not set your country of residence. To access Cashier, please update your [_1]country of residence[_2] in the Personal details section in your account settings.'),                                                   'user/settings/detailsws'),
                 risk                    : () => buildMessage(localizeKeepPlaceholders('You’ve reached your account withdrawal and trading limits. Please complete the [_1]financial assessment form[_2] to make withdrawals and continue trading.'),                                   'user/settings/assessmentws'),
@@ -387,7 +387,7 @@ const Header = (() => {
                     ? localizeKeepPlaceholders('Please [_1]accept the updated Terms and Conditions[_2].')
                     : localizeKeepPlaceholders('Please [_1]accept the updated Terms and Conditions[_2] to lift your deposit and trading limits.'), 'user/tnc_approvalws'),
                 disabled               : () => localize('Your account is temporarily disabled. Please contact us via live chat to enable deposits and withdrawals again.'),
-                financial_risk_approval: () => localize('Please complete the [_1]Approriateness Test[_2] to access your cashier.'),
+                financial_risk_approval: () => localize('Please complete the Appropriateness Test to access your cashier.'),
             };
 
             const validations = {
