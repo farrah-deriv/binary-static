@@ -182,13 +182,14 @@ const Cashier = (() => {
 
     const setBtnDisable = selector => $(selector).addClass('button-disabled').click(false);
 
-    const applyStateLockLogic = (status, deposit, withdraw) => {
+    const applyStateLockLogic = (status, deposit, withdraw, cashier_validation) => {
         const is_uk_client = Client.get('residence') === 'gb';
+        const ask_uk_funds_protection = cashier_validation && cashier_validation.findIndex(s => s === 'ASK_UK_FUNDS_PROTECTION') > 0 ? Boolean(true) : Boolean(false);
 
         // statuses to check with their corresponding selectors
         const statuses_to_check = [
             { lock: 'cashier_locked', selectors: is_uk_client ? [withdraw] : [deposit, withdraw] },
-            { lock: 'deposit_locked', selectors: [deposit] },
+            { lock: 'deposit_locked', selectors: ask_uk_funds_protection ? [deposit, withdraw] : [deposit] },
             { lock: 'withdrawal_locked', selectors: [withdraw] },
             { lock: 'no_withdrawal_or_trading', selectors: [withdraw] },
             { lock: 'unwelcome', selectors: [deposit] },
@@ -201,13 +202,14 @@ const Cashier = (() => {
     };
 
     const checkStatusIsLocked = ({ status }) => {
-        applyStateLockLogic(status, '.deposit_btn_cashier', '.withdraw_btn_cashier');
+        const { cashier_validation } = status;
+        applyStateLockLogic(status, '.deposit_btn_cashier', '.withdraw_btn_cashier', cashier_validation);
     };
 
     const checkLockStatusPA = () => {
         BinarySocket.wait('get_account_status').then(() => {
-            const { status } = State.getResponse('get_account_status');
-            applyStateLockLogic(status, '.deposit', '.withdraw');
+            const { cashier_validation, status } = State.getResponse('get_account_status');
+            applyStateLockLogic(status, '.deposit', '.withdraw', cashier_validation);
         });
     };
 

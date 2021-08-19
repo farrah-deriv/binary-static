@@ -264,9 +264,9 @@ const DepositWithdraw = (() => {
             if (/cashier_locked/.test(response_get_account_status.get_account_status.status)) {
                 if (/system_maintenance/.test(response_get_account_status.get_account_status.cashier_validation)) {
                     if (is_crypto) {
-                        showError('custom_error', localize('Our cryptocurrency cashier is temporarily down due to system maintenance. You can access the cashier as soon as the maintenance is complete.'));
+                        showError('custom_error', localize('Our cryptocurrency cashier is temporarily down due to system maintenance. You can access the Cashier in a few minutes when the maintenance is complete.'));
                     } else {
-                        showError('custom_error', localize('Our cashier is temporarily down due to system maintenance. You can access the cashier as soon as the maintenance is complete.'));
+                        showError('custom_error', localize('Our cashier is temporarily down due to system maintenance. You can access the Cashier in a few minutes when the maintenance is complete.'));
                     }
                     return;
                 }
@@ -276,6 +276,22 @@ const DepositWithdraw = (() => {
                 }
                 if (/ASK_SELF_EXCLUSION_MAX_TURNOVER_SET/.test(response_get_account_status.get_account_status.cashier_validation)) {
                     showError('limits_error');
+                    return;
+                }
+                if (/documents_expired/.test(response_get_account_status.get_account_status.cashier_validation)) {
+                    showError('custom_error', localize('The identification documents you submitted have expired. Please submit valid identity documents to unlock Cashier.'));
+                    return;
+                }
+                if (/ASK_TIN_INFORMATION/.test(response_get_account_status.get_account_status.cashier_validation)) {
+                    showError('custom_error', localize('You have not provided your tax identification number. This information is necessary for legal and regulatory requirements. Please go to Personal details in your account settings, and fill in your latest tax identification number.'));
+                    return;
+                }
+                if (/ASK_FINANCIAL_RISK_APPROVAL/.test(response_get_account_status.get_account_status.cashier_validation)) {
+                    showError('custom_error', localize('Please complete the Appropriateness Test to access your cashier.'));
+                    return;
+                }
+                if (/ASK_AUTHENTICATE/.test(response_get_account_status.get_account_status.cashier_validation) && Client.isAccountOfType('financial')) {
+                    showError('custom_error', localize('Your account has not been authenticated. Please submit your proof of identity and proof of address to authenticate your account and access your cashier.'));
                     return;
                 }
 
@@ -296,12 +312,12 @@ const DepositWithdraw = (() => {
         if (cashier_type === 'deposit') {
             if (currency_config.is_deposit_suspended) {
                 // Currency deposit is suspended
-                showError('custom_error', localize('Sorry, deposits for this currency are currently disabled.'));
+                showError('custom_error', localize('Deposits are temporarily unavailable due to system maintenance. You can make your deposits when the maintenance is complete.'));
                 return;
             }
         } else if (currency_config.is_withdrawal_suspended) { // type is withdrawal
             // Currency withdrawal is suspended
-            showError('custom_error', localize('Sorry, withdrawals for this currency are currently disabled.'));
+            showError('custom_error', localize('Withdrawals are temporarily unavailable due to system maintenance. You can make your withdrawals when the maintenance is complete.'));
             return;
         }
 

@@ -26,7 +26,7 @@ const DepositWithdraw = () => (
                 <span id='financial_risk_error'>{it.L('Financial Risk approval is required. Please contact [_1]customer support[_2] for more information.', `<a href="${it.url_for('contact')}">`, '</a>')}</span>
                 <span id='age_error'>{it.L('Account needs age verification, please contact [_1]customer support[_2] for more information.', `<a href="${it.url_for('contact')}">`, '</a>')}</span>
                 <span id='tnc_error'>{it.L('Please [_1]accept the updated Terms and Conditions[_2].', `<a href="${it.url_for('user/tnc_approvalws')}">`, '</a>')}</span>
-                <span id='limits_error'>{it.L('Please set your [_1]30-day turnover limit[_2] to access the cashier.', `<a href="${it.url_for('user/security/self_exclusionws')}">`, '</a>')}</span>
+                <span id='limits_error'>{it.L('Your access to Cashier has been temporarily disabled as you have not set your 30-day turnover limit. Please go to [_1]Self-exclusion[_2] and set your 30-day turnover limit.', `<a href="${it.url_for('user/security/self_exclusionws')}">`, '</a>')}</span>
                 <span id='token_error'>{it.L('Verification code is wrong. Please use the link sent to your email.')}</span>
                 <sapn id='no_balance_error'>{it.L('Please [_1]deposit[_2] to your account.',  `<a href="${it.url_for('cashier/forwardws')}?action=deposit">`, '</a>')}</sapn>
                 <span id='custom_error'>{it.L('Sorry, an error occurred while processing your request.')}</span>
