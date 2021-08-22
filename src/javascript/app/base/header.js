@@ -271,6 +271,7 @@ const Header = (() => {
                 status;
             const is_svg          = Client.get('landing_company_shortcode') === 'svg';
             const buildMessage = (string, path, hash = '') => template(string, [`<a href="${Url.urlFor(path)}${hash}">`, '</a>']);
+            const buildMessageHref = (string, href) => template(string, [`<a href="${href}">`, '</a>']);
             const buildSpecificMessage = (string, additional) => template(string, [...additional]);
             const hasStatus = (string) => status.findIndex(s => s === string) < 0 ? Boolean(false) : Boolean(true);
             const hasVerification = (string) => {
@@ -331,14 +332,14 @@ const Header = (() => {
             const getSystemMaintenanceMessage = () => {
                 if (is_crypto) {
                     if (hasStatus('deposit_locked')) {
-                        return localizeKeepPlaceholders('Deposits are temporarily unavailable due to system maintenance. You can make your deposits when the maintenance is complete.');
+                        return localize('Deposits are temporarily unavailable due to system maintenance. You can make your deposits when the maintenance is complete.');
                     } else if (hasStatus('withdrawal_locked')) {
-                        return localizeKeepPlaceholders('Withdrawals are temporarily unavailable due to system maintenance. You can make your withdrawals when the maintenance is complete.');
+                        return localize('Withdrawals are temporarily unavailable due to system maintenance. You can make your withdrawals when the maintenance is complete.');
                     }
-                    return localizeKeepPlaceholders('Our cryptocurrency cashier is temporarily down due to system maintenance. You can access the Cashier in a few minutes when the maintenance is complete.');
+                    return localize('Our cryptocurrency cashier is temporarily down due to system maintenance. You can access the Cashier in a few minutes when the maintenance is complete.');
                     
                 }
-                return localizeKeepPlaceholders('Our cashier is temporarily down due to system maintenance.You can access the Cashier in a few minutes when the maintenance is complete.');
+                return localize('Our cashier is temporarily down due to system maintenance.You can access the Cashier in a few minutes when the maintenance is complete.');
                 
             };
 
@@ -375,7 +376,7 @@ const Header = (() => {
                     : localizeKeepPlaceholders('Please [_1]accept the updated Terms and Conditions[_2] to lift your deposit and trading limits.'), 'user/tnc_approvalws'),
                 disabled               : () => localize('Your account is temporarily disabled. Please contact us via live chat to enable deposits and withdrawals again.'),
                 financial_risk_approval: () => localize('Please complete the Appropriateness Test to access your cashier.'),
-                ask_uk_funds_protection: () => buildMessage(localizeKeepPlaceholders('Your cashier is locked. See [_1]how we protect your funds[_2] before you proceed.'), 'cashier/forwardws?action=deposit'),
+                ask_uk_funds_protection: () => buildMessageHref(localizeKeepPlaceholders('Your cashier is locked. See [_1]how we protect your funds[_2] before you proceed.'), `${Url.urlFor('cashier/forwardws')}?action=deposit`),
             };
 
             const validations = {

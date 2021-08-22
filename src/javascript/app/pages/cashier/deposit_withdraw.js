@@ -270,6 +270,10 @@ const DepositWithdraw = (() => {
                     }
                     return;
                 }
+                if (/cashier_locked_status/.test(response_get_account_status.get_account_status.cashier_validation)) {
+                    showError('custom_error', localize('Your cashier is currently locked. Please contact us via live chat to find out how to unlock it.'));
+                    return;
+                }
                 if (/ASK_UK_FUNDS_PROTECTION/.test(response_get_account_status.get_account_status.cashier_validation)) {
                     initUKGC();
                     return;
@@ -283,7 +287,7 @@ const DepositWithdraw = (() => {
                     return;
                 }
                 if (/ASK_TIN_INFORMATION/.test(response_get_account_status.get_account_status.cashier_validation)) {
-                    showError('custom_error', localize('You have not provided your tax identification number. This information is necessary for legal and regulatory requirements. Please go to Personal details in your account settings, and fill in your latest tax identification number.'));
+                    showError('tin_error');
                     return;
                 }
                 if (/ASK_FINANCIAL_RISK_APPROVAL/.test(response_get_account_status.get_account_status.cashier_validation)) {
@@ -291,12 +295,42 @@ const DepositWithdraw = (() => {
                     return;
                 }
                 if (/ASK_AUTHENTICATE/.test(response_get_account_status.get_account_status.cashier_validation) && Client.isAccountOfType('financial')) {
-                    showError('custom_error', localize('Your account has not been authenticated. Please submit your proof of identity and proof of address to authenticate your account and access your cashier.'));
+                    showMessage('not_authenticated_message');
+                    return;
+                }
+                if (/ASK_AUTHENTICATE/.test(response_get_account_status.get_account_status.cashier_validation) && response_get_account_status.get_account_status.risk_classification === 'high') {
+                    showMessage('high_risk_not_authenticated_message');
+                    return;
+                }
+                if (/ASK_FIX_DETAILS/.test(response_get_account_status.get_account_status.cashier_validation)) {
+                    showMessage('personal_details_message');
                     return;
                 }
 
                 showError('custom_error', localize('Your cashier is locked.')); // Locked from BO
                 return;
+            } else if (cashier_type === 'deposit' && /deposit_locked/.test(response_get_account_status.get_account_status.status)) {
+                if (/ASK_FIX_DETAILS/.test(response_get_account_status.get_account_status.cashier_validation)) {
+                    showMessage('deposit_personal_details_message');
+                    return;
+                }
+                if (/unwelcome_status/.test(response_get_account_status.get_account_status.cashier_validation)) {
+                    showError('custom_error', localize('Unfortunately, you can only make withdrawals. Please contact us via live chat to enable deposits.'));
+                    return;
+                }
+            } else if (cashier_type === 'withdraw' && /withdrawal_locked/.test(response_get_account_status.get_account_status.status)) {
+                if (/withdrawal_locked_status/.test(response_get_account_status.get_account_status.cashier_validation)) {
+                    showError('custom_error', localize('Unfortunately, you can only make deposits. Please contact us via live chat to enable withdrawals.'));
+                    return;
+                }
+                if (/no_withdrawal_or_trading_status/.test(response_get_account_status.get_account_status.cashier_validation)) {
+                    showError('custom_error', localize('Unfortunately, you can only make deposits. Please contact us via live chat to enable withdrawals.'));
+                    return;
+                }
+                if (/ASK_FIX_DETAILS/.test(response_get_account_status.get_account_status.cashier_validation)) {
+                    showMessage('withdrawal_personal_details_message');
+                    return;
+                }
             }
             const account_currency_config = getPropertyValue(response_get_account_status.get_account_status, ['currency_config', Client.get('currency')]) || {};
             if ((cashier_type === 'deposit' && account_currency_config.is_deposit_suspended) ||
