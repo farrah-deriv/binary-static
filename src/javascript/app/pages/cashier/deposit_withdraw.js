@@ -1,3 +1,5 @@
+
+const moment                 = require('moment');
 const BinaryPjax             = require('../../base/binary_pjax');
 const Client                 = require('../../base/client');
 const BinarySocket           = require('../../base/socket');
@@ -7,7 +9,6 @@ const Currency               = require('../../common/currency');
 const FormManager            = require('../../common/form_manager');
 const validEmailToken        = require('../../common/form_validation').validEmailToken;
 const handleVerifyCode       = require('../../common/verification_code').handleVerifyCode;
-const getCurrencies          = require('../../../_common/base/currency_base').getCurrencies;
 const localize               = require('../../../_common/localize').localize;
 const State                  = require('../../../_common/storage').State;
 const Url                    = require('../../../_common/url');
@@ -16,7 +17,6 @@ const getPropertyValue       = require('../../../_common/utility').getPropertyVa
 const isEmptyObject          = require('../../../_common/utility').isEmptyObject;
 const getCurrentBinaryDomain = require('../../../config').getCurrentBinaryDomain;
 const isBinaryApp            = require('../../../config').isBinaryApp;
-const moment                 = require('moment');
 
 const DepositWithdraw = (() => {
     const default_iframe_height = 700;
@@ -315,11 +315,9 @@ const DepositWithdraw = (() => {
                 showError('custom_error', localize('Your cashier is locked.')); // Locked from BO
                 return;
             } else if (cashier_type === 'deposit' && /deposit_locked/.test(response_get_account_status.get_account_status.status)) {
-                if (/system_maintenance/.test(response_get_account_status.get_account_status.cashier_validation)) {
-                    if (is_crypto) {
-                        showError('custom_error', localize('Deposits are temporarily unavailable due to system maintenance. You can make your deposits when the maintenance is complete.'));
-                        return;
-                    }
+                if (/system_maintenance/.test(response_get_account_status.get_account_status.cashier_validation) && is_crypto) {
+                    showError('custom_error', localize('Deposits are temporarily unavailable due to system maintenance. You can make your deposits when the maintenance is complete.'));
+                    return;
                 }
                 if (/SelfExclusion/.test(response_get_account_status.get_account_status.cashier_validation)) {
                     showError('custom_error', localize('You have chosen to exclude yourself from trading on our website until [_1]. If you are unable to place a trade or deposit after your self-exclusion period, please contact us via live chat.', moment(+Client.get('excluded_until') * 1000).format('DD MMM YYYY')));
@@ -334,11 +332,9 @@ const DepositWithdraw = (() => {
                     return;
                 }
             } else if (cashier_type === 'withdraw' && /withdrawal_locked/.test(response_get_account_status.get_account_status.status)) {
-                if (/system_maintenance/.test(response_get_account_status.get_account_status.cashier_validation)) {
-                    if (is_crypto) {
-                        showError('custom_error', localize('Withdrawals are temporarily unavailable due to system maintenance. You can make your withdrawals when the maintenance is complete.'));
-                        return;
-                    }
+                if (/system_maintenance/.test(response_get_account_status.get_account_status.cashier_validation) && is_crypto) {
+                    showError('custom_error', localize('Withdrawals are temporarily unavailable due to system maintenance. You can make your withdrawals when the maintenance is complete.'));
+                    return;
                 }
                 if (/ASK_FIX_DETAILS/.test(response_get_account_status.get_account_status.cashier_validation)) {
                     showMessage('withdrawal_personal_details_message');
