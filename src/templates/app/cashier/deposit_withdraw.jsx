@@ -17,9 +17,6 @@ const DepositWithdraw = () => (
             <p id='personal_details_message'>
                 {it.L('Your [_1]personal details[_2] are incomplete. Please go to your account settings and complete your personal details to enable deposits and withdrawals.', `<a href="${it.url_for('user/settings/detailsws')}">`, '</a>')}
             </p>
-            <p id='deposit_personal_details_message'>
-                {it.L('Your [_1]personal details[_2] are incomplete. Please go to your account settings and complete your personal details to enable deposits.', `<a href="${it.url_for('user/settings/detailsws')}">`, '</a>')}
-            </p>
             <p id='withdrawal_personal_details_message'>
                 {it.L('Your [_1]personal details[_2] are incomplete. Please go to your account settings and complete your personal details to enable withdrawals.', `<a href="${it.url_for('user/settings/detailsws')}">`, '</a>')}
             </p>

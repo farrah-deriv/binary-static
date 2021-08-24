@@ -323,10 +323,6 @@ const DepositWithdraw = (() => {
                     showError('custom_error', localize('You have chosen to exclude yourself from trading on our website until [_1]. If you are unable to place a trade or deposit after your self-exclusion period, please contact us via live chat.', moment(+Client.get('excluded_until') * 1000).format('DD MMM YYYY')));
                     return;
                 }
-                if (/ASK_FIX_DETAILS/.test(response_get_account_status.get_account_status.cashier_validation)) {
-                    showMessage('deposit_personal_details_message');
-                    return;
-                }
                 if (/unwelcome_status/.test(response_get_account_status.get_account_status.cashier_validation)) {
                     showError('custom_error', localize('Unfortunately, you can only make withdrawals. Please contact us via live chat to enable deposits.'));
                     return;
