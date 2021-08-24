@@ -284,7 +284,7 @@ const DepositWithdraw = (() => {
                     return;
                 }
                 if (/ASK_FIX_DETAILS/.test(response_get_account_status.get_account_status.cashier_validation)) {
-                    showMessage('personal_details_message');
+                    showMessage('cashier_personal_details_message');
                     return;
                 }
                 if (/FinancialAssessmentRequired/.test(response_get_account_status.get_account_status.cashier_validation)) {

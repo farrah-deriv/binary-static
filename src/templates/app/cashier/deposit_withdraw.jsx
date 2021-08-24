@@ -15,6 +15,10 @@ const DepositWithdraw = () => (
         <div id='messages' className='invisible'>
             <p id='check_email_message'>{it.L('Please check your email for the verification link to complete the process.')}</p>
             <p id='personal_details_message'>
+                {it.L('There was a problem validating your personal details. Please update your [_1] [_2]here[_3].', '[_1]', `<a href="${it.url_for('user/settings/detailsws')}">`, '</a>')}
+                <br /> {it.L('If you need assistance feel free to contact our [_1]Customer Support[_2].', `<a href="${it.url_for('contact')}">`, '</a>')}
+            </p>
+            <p id='cashier_personal_details_message'>
                 {it.L('Your [_1]personal details[_2] are incomplete. Please go to your account settings and complete your personal details to enable deposits and withdrawals.', `<a href="${it.url_for('user/settings/detailsws')}">`, '</a>')}
             </p>
             <p id='withdrawal_personal_details_message'>
