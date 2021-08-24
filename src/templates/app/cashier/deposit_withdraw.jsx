@@ -36,6 +36,7 @@ const DepositWithdraw = () => (
                 <span id='token_error'>{it.L('Verification code is wrong. Please use the link sent to your email.')}</span>
                 <span id='no_balance_error'>{it.L('Please [_1]deposit[_2] to your account.',  `<a href="${it.url_for('cashier/forwardws')}?action=deposit">`, '</a>')}</span>
                 <span id='tin_error'>{it.L('You have not provided your tax identification number. This information is necessary for legal and regulatory requirements. Please go to [_1]Personal details[_2] in your account settings, and fill in your latest tax identification number.',  `<a href="${it.url_for('user/settings/detailsws')}">`, '</a>')}</span>
+                <span id='fa_error'>{it.L('Your cashier is locked. Please complete the [_1]financial assessment[_2] to unlock it.', `<a href="${it.url_for('user/settings/assessmentws')}">`, '</a>')}</span>
                 <span id='custom_error'>{it.L('Sorry, an error occurred while processing your request.')}</span>
             </p>
         </div>
