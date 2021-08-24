@@ -271,36 +271,24 @@ const DepositWithdraw = (() => {
                     }
                     return;
                 }
-                if (/cashier_locked_status/.test(response_get_account_status.get_account_status.cashier_validation)) {
-                    showError('custom_error', localize('Your cashier is currently locked. Please contact us via live chat to find out how to unlock it.'));
-                    return;
-                }
-                if (/ASK_UK_FUNDS_PROTECTION/.test(response_get_account_status.get_account_status.cashier_validation)) {
-                    initUKGC();
+                if (/ASK_FIX_DETAILS/.test(response_get_account_status.get_account_status.cashier_validation)) {
+                    showMessage('cashier_personal_details_message');
                     return;
                 }
                 if (/ASK_SELF_EXCLUSION_MAX_TURNOVER_SET/.test(response_get_account_status.get_account_status.cashier_validation)) {
                     showError('limits_error');
                     return;
                 }
-                if (/ASK_FIX_DETAILS/.test(response_get_account_status.get_account_status.cashier_validation)) {
-                    showMessage('cashier_personal_details_message');
+                if (/ASK_UK_FUNDS_PROTECTION/.test(response_get_account_status.get_account_status.cashier_validation)) {
+                    initUKGC();
                     return;
                 }
                 if (/FinancialAssessmentRequired/.test(response_get_account_status.get_account_status.cashier_validation)) {
                     showError('fa_error');
                     return;
                 }
-                if (/documents_expired/.test(response_get_account_status.get_account_status.cashier_validation)) {
-                    showError('custom_error', localize('The identification documents you submitted have expired. Please submit valid identity documents to unlock Cashier.'));
-                    return;
-                }
                 if (/ASK_TIN_INFORMATION/.test(response_get_account_status.get_account_status.cashier_validation)) {
                     showError('tin_error');
-                    return;
-                }
-                if (/ASK_FINANCIAL_RISK_APPROVAL/.test(response_get_account_status.get_account_status.cashier_validation)) {
-                    showError('custom_error', localize('Please complete the Appropriateness Test to access your cashier.'));
                     return;
                 }
                 if (/ASK_AUTHENTICATE/.test(response_get_account_status.get_account_status.cashier_validation) && Client.isAccountOfType('financial')) {
@@ -309,6 +297,18 @@ const DepositWithdraw = (() => {
                 }
                 if (/ASK_AUTHENTICATE/.test(response_get_account_status.get_account_status.cashier_validation) && response_get_account_status.get_account_status.risk_classification === 'high') {
                     showMessage('high_risk_not_authenticated_message');
+                    return;
+                }
+                if (/documents_expired/.test(response_get_account_status.get_account_status.cashier_validation)) {
+                    showError('custom_error', localize('The identification documents you submitted have expired. Please submit valid identity documents to unlock Cashier.'));
+                    return;
+                }
+                if (/ASK_FINANCIAL_RISK_APPROVAL/.test(response_get_account_status.get_account_status.cashier_validation)) {
+                    showError('custom_error', localize('Please complete the Appropriateness Test to access your cashier.'));
+                    return;
+                }
+                if (/cashier_locked_status/.test(response_get_account_status.get_account_status.cashier_validation)) {
+                    showError('custom_error', localize('Your cashier is currently locked. Please contact us via live chat to find out how to unlock it.'));
                     return;
                 }
 
