@@ -336,6 +336,10 @@ const DepositWithdraw = (() => {
                     showMessage('withdrawal_personal_details_message');
                     return;
                 }
+                if (/ASK_AUTHENTICATE/.test(response_get_account_status.get_account_status.cashier_validation) && response_get_account_status.get_account_status.risk_classification === 'high') {
+                    showMessage('high_risk_not_authenticated_message');
+                    return;
+                }
                 if (/withdrawal_locked_status/.test(response_get_account_status.get_account_status.cashier_validation)) {
                     showError('custom_error', localize('Unfortunately, you can only make deposits. Please contact us via live chat to enable withdrawals.'));
                     return;
