@@ -67,6 +67,20 @@ const PaymentAgentList = (() => {
                 });
             }
 
+            let urls = '';
+            if (agent.urls && agent.urls.length > 0) {
+                agent.urls.map((item, index) => {
+                    urls += (index ? ',' : '') + `<a href="${item.url}" target='_blank'>${item.url}</a>`;
+                });
+            }
+
+            let phone_numbers = '';
+            if (agent.phone_numbers && agent.phone_numbers.length > 0) {
+                agent.phone_numbers.map((item, index) => {
+                    phone_numbers += (index ? ',' : '') + `<a href="tel:${item.phone_number}">${item.phone_number}</a>`;
+                });
+            }
+
             $accordion.append(
                 $agent_template
                     .replace(/%name/g, agent.name)
@@ -75,9 +89,9 @@ const PaymentAgentList = (() => {
                     .replace(/%summary/g, agent.summary)
                     .replace(/%deposit_commission/g, agent.deposit_commission)
                     .replace(/%withdrawal_commission/g, agent.withdrawal_commission)
-                    .replace(/%url/g, agent.url)
+                    .replace(/%url/g, urls)
                     .replace(/%email/g, agent.email)
-                    .replace(/%telephone/g, agent.telephone)
+                    .replace(/%telephone/g, phone_numbers)
                     .replace(/%further_information/g, agent.further_information)
                     .replace(/%supported_banks/g, supported_banks));
         });
