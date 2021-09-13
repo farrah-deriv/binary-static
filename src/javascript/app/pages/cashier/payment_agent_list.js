@@ -70,14 +70,16 @@ const PaymentAgentList = (() => {
             let urls = '';
             if (agent.urls && agent.urls.length > 0) {
                 agent.urls.map((item, index) => {
-                    urls += (index ? ',' : '') + `<a href="${item.url}" target='_blank'>${item.url}</a>`;
+                    urls += index ? ',' : '';
+                    urls += `<a href="${item.url}" target='_blank'>${item.url}</a>`;
                 });
             }
 
             let phone_numbers = '';
             if (agent.phone_numbers && agent.phone_numbers.length > 0) {
                 agent.phone_numbers.map((item, index) => {
-                    phone_numbers += (index ? ',' : '') + `<a href="tel:${item.phone_number}">${item.phone_number}</a>`;
+                    phone_numbers += index ? ',' : '';
+                    phone_numbers += `<a href="tel:${item.phone_number}">${item.phone_number}</a>`;
                 });
             }
 
