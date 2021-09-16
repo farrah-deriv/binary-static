@@ -73,6 +73,8 @@ const PaymentAgentList = (() => {
                     urls += index ? ',' : '';
                     urls += `<a href="${item.url}" target='_blank'>${item.url}</a>`;
                 });
+            } else {
+                urls = `<a href="${agent.url}" target='_blank'>${agent.url}</a>`;
             }
 
             let phone_numbers = '';
@@ -81,6 +83,8 @@ const PaymentAgentList = (() => {
                     phone_numbers += index ? ',' : '';
                     phone_numbers += `<a href="tel:${item.phone_number}">${item.phone_number}</a>`;
                 });
+            } else {
+                phone_numbers = `<a href="tel:${agent.telephone}">${agent.telephone}</a>`;
             }
 
             $accordion.append(
