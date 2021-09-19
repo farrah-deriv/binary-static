@@ -64,6 +64,7 @@ const PaymentAgentList = (() => {
                         `<img src="${Url.urlForStatic(`images/pages/payment_agent/banks/${item.payment_method.toLowerCase()}.png`)}" alt="${item.payment_method}" title="${item.payment_method}" />`;
                 });
             } else if (agent.supported_banks && agent.supported_banks.length > 0) {
+                //TODO: remove this block when support for multiple payment methods is released
                 const banks = agent.supported_banks.split(',');
                 banks.map((bank) => {
                     supported_banks += bank.length === 0 ?
@@ -79,6 +80,7 @@ const PaymentAgentList = (() => {
                     urls += `<a href="${item.url}" target='_blank'>${item.url}</a>`;
                 });
             } else {
+                //TODO: remove this when support for multiple payment agent urls is released
                 urls = `<a href="${agent.url}" target='_blank'>${agent.url}</a>`;
             }
 
@@ -89,6 +91,7 @@ const PaymentAgentList = (() => {
                     phone_numbers += `<a href="tel:${item.phone_number}">${item.phone_number}</a>`;
                 });
             } else {
+                //TODO: remove this when support for multiple payment agent phones is released
                 phone_numbers = `<a href="tel:${agent.telephone}">${agent.telephone}</a>`;
             }
 
