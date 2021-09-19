@@ -58,7 +58,12 @@ const PaymentAgentList = (() => {
 
         list.map((agent) => {
             let supported_banks = '';
-            if (agent.supported_banks && agent.supported_banks.length > 0) {
+            if (agent.supported_payment_methods && agent.supported_payment_methods.length > 0) {
+                agent.supported_payment_methods.map((item) => {
+                    supported_banks +=
+                        `<img src="${Url.urlForStatic(`images/pages/payment_agent/banks/${item.payment_method.toLowerCase()}.png`)}" alt="${item.payment_method}" title="${item.payment_method}" />`;
+                });
+            } else if (agent.supported_banks && agent.supported_banks.length > 0) {
                 const banks = agent.supported_banks.split(',');
                 banks.map((bank) => {
                     supported_banks += bank.length === 0 ?
