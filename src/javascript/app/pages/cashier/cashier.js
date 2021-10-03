@@ -331,7 +331,7 @@ const Cashier = (() => {
                                     cancel_class     : 'switch-cancel-btn',
                                     localized_title  : localize('Switch to crypto account?'),
                                     localized_message: localize('To deposit cryptocurrency, switch your account.'),
-                                    onConfirm        : () => Accounts.showCurrencyPopUp('switch', 'deposit'),
+                                    onConfirm        : () => Accounts.showCurrencyPopUp('switch', 'deposit', false, true),
                                     onAbort          : () => BinaryPjax.load(Url.urlFor('cashier')),
                                 });
                             });
@@ -347,7 +347,7 @@ const Cashier = (() => {
                                     cancel_class     : 'switch-cancel-btn',
                                     localized_title  : localize('Switch account?'),
                                     localized_message: localize('To withdraw cryptocurrency, switch your account.'),
-                                    onConfirm        : () => Accounts.showCurrencyPopUp('switch', 'withdrawal'),
+                                    onConfirm        : () => Accounts.showCurrencyPopUp('switch', 'withdrawal', false, true),
                                     onAbort          : () => BinaryPjax.load(Url.urlFor('cashier')),
                                 });
                             });
@@ -355,61 +355,46 @@ const Cashier = (() => {
                         });
                     } else {
                         el_crypto_deposit.on('click', ()=>{
-                            Accounts.showCurrencyPopUp('create', 'deposit', false);
+                            Accounts.showCurrencyPopUp('create', 'deposit', false, true);
                             return false;
                         });
                         el_crypto_withdraw.on('click', ()=>{
-                            Accounts.showCurrencyPopUp('create', 'withdrawal', false);
+                            Accounts.showCurrencyPopUp('create', 'withdrawal', false, true);
                             return false;
                         });
                     }
                 } else {
                     $('.normal_currency').setVisibility(1);
                     el_crypto_deposit.on('click', ()=>{
-                        Accounts.showCurrencyPopUp('switch', 'deposit');
+                        Accounts.showCurrencyPopUp('switch', 'deposit', false, true);
                         return false;
                     });
                     el_crypto_withdraw.on('click', ()=>{
-                        Accounts.showCurrencyPopUp('switch', 'withdrawal');
+                        Accounts.showCurrencyPopUp('switch', 'withdrawal', false, true);
                         return false;
                     });
                 }
-
-                if (is_virtual_account){
-                    if (has_fiat_account || has_crypto_account){
-                        el_paymentmethod_deposit.on('click', () => {
-                            BinarySocket.send({ authorize: 1 }).then(() => {
-                                Accounts.showCurrencyPopUp('switch', 'payment_agent', true);
-                            });
-                            return false;
-                        });
-                        el_paymentmethod_withdraw.on('click', () => {
-                            BinarySocket.send({ authorize: 1 }).then(() => {
-                                Accounts.showCurrencyPopUp('switch', 'payment_agent', true);
-                            });
-                            return false;
-                        });
-                        
-                    } else {
-                        el_paymentmethod_deposit.on('click', () => {
-                            el_paymentmethod_deposit.attr('href', Url.urlFor('/new_account/real_account'));
-                        });
-                        el_paymentmethod_withdraw.on('click', () => {
-                            el_paymentmethod_withdraw.attr('href', Url.urlFor('/new_account/real_account'));
-                        });
-                    }
-                } else {
+              
+                if (has_fiat_account || has_crypto_account){
                     el_paymentmethod_deposit.on('click', () => {
                         BinarySocket.send({ authorize: 1 }).then(() => {
-                            Accounts.showCurrencyPopUp('switch', 'payment_agent', true);
+                            Accounts.showCurrencyPopUp('switch', 'payment_agent', false, false);
                         });
                         return false;
                     });
                     el_paymentmethod_withdraw.on('click', () => {
                         BinarySocket.send({ authorize: 1 }).then(() => {
-                            Accounts.showCurrencyPopUp('switch', 'payment_agent', true);
+                            Accounts.showCurrencyPopUp('switch', 'payment_agent', false, false);
                         });
                         return false;
+                    });
+                    
+                } else {
+                    el_paymentmethod_deposit.on('click', () => {
+                        el_paymentmethod_deposit.attr('href', Url.urlFor('/new_account/real_account'));
+                    });
+                    el_paymentmethod_withdraw.on('click', () => {
+                        el_paymentmethod_withdraw.attr('href', Url.urlFor('/new_account/real_account'));
                     });
                 }
             });

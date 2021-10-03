@@ -52,49 +52,26 @@ const DepositWithdrawButtonCryptocurrencies = ({ is_cryptocurrencies_method }) =
     <div className='gr-2 gr-12-m'>
         <SeparatorLine className='gr-parent gr-hide gr-show-m gr-padding-10' invisible />
         <div className='gr-row gr-row-align-left gr-row-align-right-m'>
-            {is_cryptocurrencies_method ?
-                <React.Fragment>
-                    <div className='gr-adapt gr-no-gutter-m client_real client_virtual invisible gr-parent'>
-                        <Button
-                            className='toggle button client_real client_virtual invisible deposit_btn_cashier'
-                            id='crypto_deposit_link'
-                            href='javasript:;'
-                            text={it.L('Deposit')}
-                            text_className='deposit'
-                        />
-                    </div>
-                    <div className='gr-adapt client_real client_virtual invisible'>
-                        <Button
-                            className='toggle button client_real client_virtual invisible withdraw_btn_cashier'
-                            id='crypto_withdraw_link'
-                            href={it.url_for('/cashier/forwardws?action=withdraw')}
-                            text={it.L('Withdraw')}
-                            text_className='withdraw'
-                        />
-                    </div>
-                </React.Fragment>
-                :
-                <React.Fragment>
-                    <div className='gr-adapt gr-no-gutter-m client_real client_virtual invisible gr-parent'>
-                        <Button
-                            className='toggle button client_real client_virtual invisible deposit_btn_cashier'
-                            id='payment_agent_deposit_link'
-                            href='javasript:;'
-                            text={it.L('Deposit')}
-                            text_className='deposit'
-                        />
-                    </div>
-                    <div className='gr-adapt client_real client_virtual invisible'>
-                        <Button
-                            className='toggle button client_real client_virtual invisible withdraw_btn_cashier'
-                            id='payment_agent_withdraw_link'
-                            href={it.url_for('/paymentagent/withdrawws')}
-                            text={it.L('Withdraw')}
-                            text_className='withdraw'
-                        />
-                    </div>
-                </React.Fragment>
-            }
+            <React.Fragment>
+                <div className='gr-adapt gr-no-gutter-m client_real client_virtual invisible gr-parent'>
+                    <Button
+                        className='toggle button client_real client_virtual invisible deposit_btn_cashier'
+                        id={is_cryptocurrencies_method ? 'crypto_deposit_link' : 'payment_agent_deposit_link'}
+                        href='javasript:;'
+                        text={it.L('Deposit')}
+                        text_className='deposit'
+                    />
+                </div>
+                <div className='gr-adapt client_real client_virtual invisible'>
+                    <Button
+                        className='toggle button client_real client_virtual invisible withdraw_btn_cashier'
+                        id={is_cryptocurrencies_method ? 'crypto_withdraw_link' : 'payment_agent_withdraw_link'}
+                        href={is_cryptocurrencies_method ? it.url_for('/cashier/forwardws?action=withdraw') : it.url_for('/paymentagent/withdrawws')}
+                        text={it.L('Withdraw')}
+                        text_className='withdraw'
+                    />
+                </div>
+            </React.Fragment>
         </div>
     </div>
 );
@@ -171,7 +148,7 @@ const Cashier = () => (
 
         <div className='gr-padding-10 table-body crypto_currency'>
             <h3 className='gr-padding-10'>
-                <span >{it.L('Deposit cryptocurrencies')}</span>
+                {it.L('Deposit cryptocurrencies')}
             </h3>
             <div className='gr-row'>
                 <IconWithLink
@@ -196,7 +173,7 @@ const Cashier = () => (
 
         <div className='gr-padding-10 table-body payment-agent' id='payment-agent-section'>
             <h3 className='gr-padding-10'>
-                <span>{it.L('Deposit via payment agents')}</span>
+                {it.L('Deposit via payment agents')}
             </h3>
             <div className='gr-row'>
                 <IconWithLink

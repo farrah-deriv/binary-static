@@ -18,7 +18,7 @@ const SetCurrency = (() => {
         onConfirmAdditional,
         $submit;
 
-    const onLoad = async (fncOnConfirm, redirect_to, all_fiat) => {
+    const onLoad = async (fncOnConfirm, redirect_to, all_fiat, all_crypto) => {
         onConfirmAdditional = fncOnConfirm;
         is_new_account = localStorage.getItem('is_new_account');
         localStorage.removeItem('is_new_account');
@@ -31,7 +31,7 @@ const SetCurrency = (() => {
 
         const payout_currencies = (await BinarySocket.wait('payout_currencies')).payout_currencies;
         const $currency_list    = $('.currency_list');
-        const $error             = $('#set_currency').find('.error-msg');
+        const $error            = $('#set_currency').find('.error-msg');
 
         $('#deposit_btn').off('click dblclick').on('click dblclick', () => {
             if (popup_action) {
@@ -51,18 +51,12 @@ const SetCurrency = (() => {
                 $('#deposit_row').setVisibility(1);
                 $('#congratulations_message').html(localize('You have added a [_1] account.', [Client.get('currency')]));
             } else if (popup_action) {
-                const is_virtual = Client.get('is_virtual');
-                const has_crypto_account = Client.hasCurrencyType('crypto');
                 let currencies = [];
 
                 if (/multi_account|set_currency/.test(popup_action)) {
-                    if (is_virtual || has_crypto_account) {
-                        currencies = getVirtualAvailableCurrencies(landing_company, all_fiat);
-                    } else {
-                        currencies = getAvailableCurrencies(landing_company, payout_currencies);
-                    }
+                    currencies = getOtherCurrencies(landing_company, all_fiat, all_crypto);
                 } else if (/switch_account/.test(popup_action)) {
-                    currencies = getCurrentCryptoCurrencies(landing_company, all_fiat);
+                    currencies = getCurrentCurrencies(all_fiat, all_crypto);
                 } else {
                     currencies = getCurrencyChangeOptions(landing_company);
                 }
@@ -80,7 +74,7 @@ const SetCurrency = (() => {
                 const action_map = {
                     set_currency   : localize('Set currency'),
                     change_currency: localize('Change currency'),
-                    multi_account  : all_fiat ? localize('Create account') : localize('Add account'),
+                    multi_account  : !all_fiat && !all_crypto ? localize('Create account') : localize('Add account'),
                     switch_account : localize('Continue'),
                 };
 
@@ -90,7 +84,7 @@ const SetCurrency = (() => {
                     .off('click dblclick')
                     .on('click dblclick', () => {
                         if (!$submit.hasClass('button-disabled')) {
-                            onConfirm($currency_list, $error, popup_action === 'multi_account', redirect_to);
+                            onConfirm($currency_list, $error, popup_action === 'multi_account', redirect_to, all_fiat, all_crypto);
                         }
                         $submit.addClass('button-disabled');
                     })
@@ -109,33 +103,44 @@ const SetCurrency = (() => {
     const getAvailableCurrencies = (landing_company, payout_currencies) =>
         Client.hasSvgAccount() ? GetCurrency.getCurrencies(landing_company) : payout_currencies;
 
-    const getCurrentCryptoCurrencies = (landing_company, all_fiat) => {
-        const allowed_currencies =  Client.getLandingCompanyValue({ real: 1 }, landing_company, 'legal_allowed_currencies');
+    const getCurrentCurrencies = (all_fiat=false, all_crypto=false) => {
         const current_currencies = GetCurrency.getCurrenciesOfOtherAccounts(true);
-        current_currencies.push(Client.get('currency'));
-        if (all_fiat) {
-            return allowed_currencies.filter(currency => current_currencies.includes(currency));
-        }
-        return allowed_currencies.filter(
-            currency => current_currencies.includes(currency) && isCryptocurrency(currency)
-        );
-        
-    };
+        const is_virtual = Client.get('is_virtual');
 
-    const getVirtualAvailableCurrencies = (landing_company, all_fiat) => {
-        const allowed_currencies = GetCurrency.getCurrencies(landing_company);
-        const current_currencies = GetCurrency.getCurrenciesOfOtherAccounts(true);
-        current_currencies.push(Client.get('currency'));
-
+        if (!is_virtual) current_currencies.push(Client.get('currency'));
         if (all_fiat) {
-            return allowed_currencies.filter(
+            return current_currencies.filter(
                 currency => !isCryptocurrency(currency)
             );
+        } 
+        if (all_crypto) {
+            return current_currencies.filter(
+                currency => isCryptocurrency(currency)
+            );
         }
-        return allowed_currencies.filter(
-            currency => !current_currencies.includes(currency) && isCryptocurrency(currency)
-        );
+        return current_currencies;
+    };
 
+    const getOtherCurrencies = (landing_company, all_fiat=false, all_crypto=false) => {
+        const allowed_currencies =  Client.getLandingCompanyValue({ real: 1 }, landing_company, 'legal_allowed_currencies');
+        const current_currencies = GetCurrency.getCurrenciesOfOtherAccounts(true);
+        const is_virtual = Client.get('is_virtual');
+
+        if (!is_virtual) current_currencies.push(Client.get('currency'));
+        if (all_fiat) {
+            return allowed_currencies.filter(
+                currency => !current_currencies.includes(currency) && !isCryptocurrency(currency)
+            );
+        } 
+        if (all_crypto) {
+            return allowed_currencies.filter(
+                currency => !current_currencies.includes(currency) && isCryptocurrency(currency)
+            );
+        }
+        
+        return allowed_currencies.filter(
+            currency => !current_currencies.includes(currency)
+        );
     };
 
     const getCurrencyChangeOptions = (landing_company) => {
@@ -153,30 +158,26 @@ const SetCurrency = (() => {
         const $fiat_currencies  = $('<div/>');
         const $cryptocurrencies = $('<div/>');
         currencies.forEach((c) => {
-            const $wrapper = $('<div/>', { class: 'gr-2 gr-6-m currency_wrapper', id: c });
+            const $wrapper = $('<div/>', { class: 'gr-3 gr-6-m currency_wrapper', id: c });
             const $image   = $('<div/>').append($('<img/>', { src: Url.urlForStatic(`images/pages/set_currency/${c.toLowerCase()}.svg`) }));
             const $name    = $('<div/>', { class: 'currency-name' });
-            if (Currency.isCryptocurrency(c)) {
-                const $display_name = $('<span/>', {
-                    text: Currency.getCurrencyName(c) || c,
-                    ...(/^UST$/.test(c) && {
-                        'data-balloon'       : localize('Tether Omni (USDT) is a version of Tether that\'s pegged to USD and is built on the Bitcoin blockchain.'),
-                        'data-balloon-length': 'medium',
-                        'data-balloon-pos'   : 'top',
-                        'class'              : 'show-mobile',
-                    }),
-                    ...(/^eUSDT/.test(c) && {
-                        'data-balloon'       : localize('Tether ERC20 (eUSDT) is a version of Tether that\'s pegged to USD and is hosted on the Ethereum platform.'),
-                        'data-balloon-length': 'medium',
-                        'data-balloon-pos'   : 'top',
-                        'class'              : 'show-mobile',
-                    }),
-                });
+            const $display_name = $('<span/>', {
+                text: Currency.getCurrencyName(c) || c,
+                ...(/^UST$/.test(c) && {
+                    'data-balloon'       : localize('Tether Omni (USDT) is a version of Tether that\'s pegged to USD and is built on the Bitcoin blockchain.'),
+                    'data-balloon-length': 'medium',
+                    'data-balloon-pos'   : 'top',
+                    'class'              : 'show-mobile',
+                }),
+                ...(/^eUSDT/.test(c) && {
+                    'data-balloon'       : localize('Tether ERC20 (eUSDT) is a version of Tether that\'s pegged to USD and is hosted on the Ethereum platform.'),
+                    'data-balloon-length': 'medium',
+                    'data-balloon-pos'   : 'top',
+                    'class'              : 'show-mobile',
+                }),
+            });
 
-                $name.append($display_name).append($('<br/>')).append(`(${Currency.getCurrencyDisplayCode(c)})`);
-            } else {
-                $name.text(c);
-            }
+            $name.append($display_name).append($('<br/>')).append(`(${Currency.getCurrencyDisplayCode(c)})`);
 
             $wrapper.append($image).append($name);
             (Currency.isCryptocurrency(c) ? $cryptocurrencies : $fiat_currencies).append($wrapper);
@@ -186,17 +187,18 @@ const SetCurrency = (() => {
         let crypto_currencies = '';
         const upgrade_info        = Client.getUpgradeInfo();
         const has_upgrade         = upgrade_info.can_upgrade || upgrade_info.can_open_multi;
-                                    
+        const has_fiat_account    = Client.hasCurrencyType('fiat');
+                
         if (popup_action === 'switch_account') {
             if (fiat_currencies) {
                 $cryptocurrencies.prepend(fiat_currencies);
             }
 
             if (has_upgrade){
-                const $add_wrapper = $('<div/>', { class: 'gr-2 gr-4-m currency_wrapper', id: 'NEW' });
+                const $add_wrapper = $('<div/>', { class: 'gr-3 gr-6-m currency_wrapper', id: 'NEW' });
                 const $add_image   = $('<div/>').append($('<img/>',  { src: Url.urlForStatic('images/pages/set_currency/add.svg') }));
                 const $add_name    = $('<div/>', { class: 'currency-name' });
-                $add_name.text(localize('Add new crypto account'));
+                has_fiat_account ? $add_name.text(localize('Add new crypto account')) : $add_name.text(localize('Add new account'));
                 $add_wrapper.append($add_image).append($add_name);
                 $cryptocurrencies.append($add_wrapper);
             }
@@ -228,19 +230,29 @@ const SetCurrency = (() => {
                     $('#set_currency_text_secondary').text(localize('Choose your preferred cryptocurrency'));
                     $('#set_currency_text_note').text(localize('You can open an account for each cryptocurrency.'));
                 } else if (fiat_currencies && !crypto_currencies) {
-                    $('#set_currency_text').text(localize('Add a fiat currency account'));
+                    $('#set_currency_text').setVisibility(0);
                 }
             } else if (popup_action === 'switch_account') {
-                $('#set_currency_text').text(localize('Choose a cryptocurrency account'));
-                $('#set_currency_text_secondary').text(localize('Choose one of your accounts or add a new cryptocurrency account'));
+                $('#set_currency_text').text(localize('Choose an account'));
+                if (has_fiat_account) {
+                    $('#set_currency_text_secondary').text(localize('Choose one of your accounts or add a new cryptocurrency account'));
+                } else {
+                    $('#set_currency_text_secondary').text(localize('Choose one of your accounts or add a new account'));
+                }
             }  else {
                 $('#set_currency_text').text(localize('Please select the currency for this account:'));
             }
         } else if (popup_action === 'switch_account') {
             $('#set_currency_text').text(localize('Choose an account'));
-            $('#set_currency_text_secondary').text(localize('Choose one of your accounts or add a new cryptocurrency account'));
+            if (has_fiat_account) {
+                $('#set_currency_text_secondary').text(localize('Choose one of your accounts or add a new cryptocurrency account'));
+            } else {
+                $('#set_currency_text_secondary').text(localize('Choose one of your accounts or add a new account'));
+            }
         } else {
-            $('#set_currency_text').text(localize('Do you want this to be a fiat account or crypto account? Please choose one:'));
+            $('#set_currency_text').setVisibility(0);
+            $('#set_currency_text_secondary').setVisibility(0);
+            $('#set_currency_text_note').setVisibility(0);
         }
 
         $('#set_currency_loading').remove();
@@ -283,9 +295,11 @@ const SetCurrency = (() => {
         });
     };
 
-    const onConfirm = ($currency_list, $error, should_create_account, redirect_to) => {
+    const onConfirm = ($currency_list, $error, should_create_account, redirect_to, all_fiat, all_crypto) => {
         removeError($error);
         const $selected_currency = $currency_list.find('.selected');
+        const has_fiat_account    = Client.hasCurrencyType('fiat');
+
         if ($selected_currency.length) {
             const selected_currency = $selected_currency.attr('id');
             let request = {};
@@ -293,7 +307,11 @@ const SetCurrency = (() => {
             if (popup_action === 'switch_account') {
                 if (selected_currency === 'NEW'){
                     localStorage.setItem('popup_action', 'multi_account');
-                    onLoad(null, false, false);
+                    if (!all_fiat && !all_crypto && has_fiat_account) {
+                        onLoad(null, false, false, true);
+                    } else {
+                        onLoad(null, false, all_fiat, all_crypto);
+                    }
                 } else {
                     cleanupPopup();
                     Header.switchLoginid(getLoginid(selected_currency), redirect_to, true);
@@ -400,13 +418,10 @@ const SetCurrency = (() => {
         const real_all_loginids = all_loginids.filter(loginid => !loginid.includes('VRTC'));
         let loginid = '';
         real_all_loginids.forEach((id) => {
-            if (Client.get('loginid') !== id) {
-                const currency = Client.get('currency', id);
-                if (selected_currency === currency) {
-                    loginid = id;
-                }
+            const currency = Client.get('currency', id);
+            if (selected_currency === currency) {
+                loginid = id;
             }
-
         });
 
         return loginid;

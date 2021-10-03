@@ -35,11 +35,7 @@ const SetCurrency = (() => {
         populateCurrencies(getAvailableCurrencies(landing_company, real_account_signup_target));
         onSelection(true);
 
-        if (default_value !== '') setDefaultValue(default_value);
-    };
-
-    const setDefaultValue = (default_meaning) => {
-        $currency_list.find(`#${default_meaning}`).addClass('selected');
+        if (default_value) $currency_list.find(`#${default_value}`).addClass('selected');
     };
 
     const getAvailableCurrencies = (landing_company, real_account_signup_target) => {

@@ -172,14 +172,14 @@ const Accounts = (() => {
         switch: 'switch_account',
     };
 
-    const showCurrencyPopUp = (action, redirect_to, all_fiat) => {
+    const showCurrencyPopUp = (action, redirect_to, all_fiat, all_crypto) => {
         showPopup({
             url               : urlFor('user/set-currency'),
             content_id        : '#set_currency',
             form_id           : 'frm_set_currency',
             additionalFunction: async () => {
                 localStorage.setItem('popup_action', action_map[action]);
-                await SetCurrency.onLoad(onConfirmSetCurrency, redirect_to, all_fiat);
+                await SetCurrency.onLoad(onConfirmSetCurrency, redirect_to, all_fiat, all_crypto);
             },
         });
     };

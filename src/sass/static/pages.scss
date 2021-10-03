@@ -859,22 +859,33 @@ body #not_authenticated_financial ul.checked > li {
 
 .lightbox #set_currency {
     padding: 25px;
-    padding-bottom: 4px;
+    padding-bottom: 20px;
     width: 40em;
 
     #set_currency_text {
         margin-top: 0;
+        margin-bottom: 2.9rem;
     }
     #set_currency_text_secondary {
         font-size: 16px;
+        margin-bottom: 0;
     }
     #set_currency_text_note {
         font-size: 10px;
-        font-family: 'Open Sans', sans-serif;
+        margin-top: 0.4rem;
     }
     #fiat_currencies, #crypto_currencies {
         + div {
             max-width: 30em;
+        }
+        .note {
+            margin: 0.4rem auto 0;
+            font-size: 10px;
+        }
+    }
+    #crypto_currencies {
+        .text {
+            margin: 0 auto;
         }
     }
     .section-divider {
@@ -887,6 +898,9 @@ body #not_authenticated_financial ul.checked > li {
     }
     #deposit_btn {
         margin-bottom: 16px;
+    }
+    .button span {
+        width: 10em;
     }
 }
 
