@@ -103,7 +103,7 @@ const SetCurrency = (() => {
     const getAvailableCurrencies = (landing_company, payout_currencies) =>
         Client.hasSvgAccount() ? GetCurrency.getCurrencies(landing_company) : payout_currencies;
 
-    const getCurrentCurrencies = (all_fiat=false, all_crypto=false) => {
+    const getCurrentCurrencies = (all_fiat = false, all_crypto = false) => {
         const current_currencies = GetCurrency.getCurrenciesOfOtherAccounts(true);
         const is_virtual = Client.get('is_virtual');
 
@@ -112,7 +112,7 @@ const SetCurrency = (() => {
             return current_currencies.filter(
                 currency => !isCryptocurrency(currency)
             );
-        } 
+        }
         if (all_crypto) {
             return current_currencies.filter(
                 currency => isCryptocurrency(currency)
@@ -121,7 +121,7 @@ const SetCurrency = (() => {
         return current_currencies;
     };
 
-    const getOtherCurrencies = (landing_company, all_fiat=false, all_crypto=false) => {
+    const getOtherCurrencies = (landing_company, all_fiat = false, all_crypto = false) => {
         const allowed_currencies =  Client.getLandingCompanyValue({ real: 1 }, landing_company, 'legal_allowed_currencies');
         const current_currencies = GetCurrency.getCurrenciesOfOtherAccounts(true);
         const is_virtual = Client.get('is_virtual');
@@ -131,7 +131,7 @@ const SetCurrency = (() => {
             return allowed_currencies.filter(
                 currency => !current_currencies.includes(currency) && !isCryptocurrency(currency)
             );
-        } 
+        }
         if (all_crypto) {
             return allowed_currencies.filter(
                 currency => !current_currencies.includes(currency) && isCryptocurrency(currency)
@@ -198,7 +198,13 @@ const SetCurrency = (() => {
                 const $add_wrapper = $('<div/>', { class: 'gr-3 gr-6-m currency_wrapper', id: 'NEW' });
                 const $add_image   = $('<div/>').append($('<img/>',  { src: Url.urlForStatic('images/pages/set_currency/add.svg') }));
                 const $add_name    = $('<div/>', { class: 'currency-name' });
-                has_fiat_account ? $add_name.text(localize('Add new crypto account')) : $add_name.text(localize('Add new account'));
+                
+                if (has_fiat_account) {
+                    $add_name.text(localize('Add new crypto account'));
+                } else {
+                    $add_name.text(localize('Add new account'));
+                }
+
                 $add_wrapper.append($add_image).append($add_name);
                 $cryptocurrencies.append($add_wrapper);
             }
