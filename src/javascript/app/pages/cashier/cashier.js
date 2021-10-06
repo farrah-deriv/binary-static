@@ -209,6 +209,51 @@ const Cashier = (() => {
         });
     };
 
+    const switchToAccount = (account_type, transaction_type, fiat_account) => {
+        let ok_text = '';
+        let localized_title = '';
+        let localized_message = '';
+
+        if (account_type === 'fiat') {
+            ok_text = localize('Switch account');
+            localized_title = localize('Switch account?');
+            if (transaction_type === 'deposit') {
+                localized_message = localize('To deposit money, please switch to your [_1] account', fiat_account);
+            } else {
+                localized_message = localize('To withdraw money, please switch to your [_1] account', fiat_account);
+            }
+        } else {
+            ok_text = localize('Switch to crypto account');
+            localized_title = localize('Switch to crypto account?');
+            if (transaction_type === 'deposit') {
+                localized_message = localize('To deposit cryptocurrency, switch your account.');
+            } else {
+                localized_message = localize('To withdraw cryptocurrency, switch your account.');
+            }
+        }
+
+        BinarySocket.send({ authorize: 1 }).then(() => {
+            Dialog.confirm({
+                id          : 'deposit_currency_change_popup_container',
+                ok_text,
+                ok_class    : 'switch-ok-btn',
+                cancel_text : localize('Cancel'),
+                cancel_class: 'switch-cancel-btn',
+                localized_title,
+                localized_message,
+                onConfirm   : () => {
+                    if (account_type === 'fiat') {
+                        Header.switchLoginid(fiat_account, transaction_type);
+                    } else {
+                        Accounts.showCurrencyPopUp('switch', transaction_type, false, true);
+                    }
+                },
+                onAbort: () => BinaryPjax.load(Url.urlFor('cashier')),
+            });
+        
+        });
+    };
+
     const onLoad = () => {
         const is_virtual = Client.get('is_virtual');
         if (is_virtual && isDefaultVirtualBalance()) {
@@ -269,37 +314,11 @@ const Cashier = (() => {
                     $('.payment-agent-section').setVisibility(1);
                     if (has_fiat_account) {
                         el_fiat_deposit.on('click', () => {
-                            BinarySocket.send({ authorize: 1 }).then(() => {
-                                Dialog.confirm({
-                                    id               : 'deposit_currency_change_popup_container',
-                                    ok_text          : localize('Switch account'),
-                                    ok_class         : 'switch-ok-btn',
-                                    cancel_text      : localize('Cancel'),
-                                    cancel_class     : 'switch-cancel-btn',
-                                    localized_title  : localize('Switch account?'),
-                                    localized_message: localize('To deposit money, please switch to your [_1] account', has_fiat_account),
-                                    onConfirm        : () =>  Header.switchLoginid(has_fiat_account, 'deposit'),
-                                    onAbort          : () => BinaryPjax.load(Url.urlFor('cashier')),
-                                });
-                            
-                            });
+                            switchToAccount('fiat', 'deposit', has_fiat_account);
                             return false;
                         });
                         el_fiat_withdraw.on('click', () => {
-                            BinarySocket.send({ authorize: 1 }).then(() => {
-                                Dialog.confirm({
-                                    id               : 'deposit_currency_change_popup_container',
-                                    ok_text          : localize('Switch account'),
-                                    ok_class         : 'switch-ok-btn',
-                                    cancel_text      : localize('Cancel'),
-                                    cancel_class     : 'switch-cancel-btn',
-                                    localized_title  : localize('Switch account?'),
-                                    localized_message: localize('To withdraw money, please switch to your [_1] account', has_fiat_account),
-                                    onConfirm        : () =>  Header.switchLoginid(has_fiat_account, 'withdrawal'),
-                                    onAbort          : () => BinaryPjax.load(Url.urlFor('cashier')),
-                                });
-                            
-                            });
+                            switchToAccount('fiat', 'withdrawal', has_fiat_account);
                             return false;
                         });
                     } else {
@@ -322,35 +341,11 @@ const Cashier = (() => {
                     $('.normal_currency').setVisibility(1);
                     if (has_crypto_account) {
                         el_crypto_deposit.on('click', () => {
-                            BinarySocket.send({ authorize: 1 }).then(() => {
-                                Dialog.confirm({
-                                    id               : 'deposit_currency_change_popup_container',
-                                    ok_text          : localize('Switch to crypto account'),
-                                    ok_class         : 'switch-ok-btn',
-                                    cancel_text      : localize('Cancel'),
-                                    cancel_class     : 'switch-cancel-btn',
-                                    localized_title  : localize('Switch to crypto account?'),
-                                    localized_message: localize('To deposit cryptocurrency, switch your account.'),
-                                    onConfirm        : () => Accounts.showCurrencyPopUp('switch', 'deposit', false, true),
-                                    onAbort          : () => BinaryPjax.load(Url.urlFor('cashier')),
-                                });
-                            });
+                            switchToAccount('crypto', 'deposit');
                             return false;
                         });
                         el_crypto_withdraw.on('click', () => {
-                            BinarySocket.send({ authorize: 1 }).then(() => {
-                                Dialog.confirm({
-                                    id               : 'deposit_currency_change_popup_container',
-                                    ok_text          : localize('Switch to crypto account'),
-                                    ok_class         : 'switch-ok-btn',
-                                    cancel_text      : localize('Cancel'),
-                                    cancel_class     : 'switch-cancel-btn',
-                                    localized_title  : localize('Switch account?'),
-                                    localized_message: localize('To withdraw cryptocurrency, switch your account.'),
-                                    onConfirm        : () => Accounts.showCurrencyPopUp('switch', 'withdrawal', false, true),
-                                    onAbort          : () => BinaryPjax.load(Url.urlFor('cashier')),
-                                });
-                            });
+                            switchToAccount('crypto', 'withdrawal');
                             return false;
                         });
                     } else {
