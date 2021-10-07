@@ -249,11 +249,10 @@ const SetCurrency = (() => {
                 $('#set_currency_text').text(localize('Please select the currency for this account:'));
             }
         } else if (popup_action === 'switch_account') {
+            $('#set_currency_text').text(localize('Choose an account'));
             if (has_fiat_account) {
-                $('#set_currency_text').text(localize('Choose a cryptocurrency account'));
                 $('#set_currency_text_secondary').text(localize('Choose one of your accounts or add a new cryptocurrency account'));
             } else {
-                $('#set_currency_text').text(localize('Choose an account'));
                 $('#set_currency_text_secondary').text(localize('Choose one of your accounts or add a new account'));
             }
         } else {

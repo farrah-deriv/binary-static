@@ -146,7 +146,7 @@ const Cashier = () => (
             </div>
         </div>
 
-        <div className='gr-padding-10 table-body crypto_currency'>
+        <div className='gr-padding-10 table-body invisible crypto_currency'>
             <h3 className='gr-padding-10'>
                 {it.L('Deposit cryptocurrencies')}
             </h3>
@@ -171,7 +171,7 @@ const Cashier = () => (
 
         <div className='gr-padding-10' />
 
-        <div className='gr-padding-10 table-body payment-agent' id='payment-agent-section'>
+        <div className='gr-padding-10 table-body invisible payment-agent' id='payment-agent-section'>
             <h3 className='gr-padding-10'>
                 {it.L('Deposit via payment agents')}
             </h3>

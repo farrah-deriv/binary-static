@@ -303,9 +303,9 @@ const Cashier = (() => {
                 const el_crypto_withdraw = $('#crypto_withdraw_link');
                 const el_paymentmethod_deposit = $('#payment_agent_deposit_link');
                 const el_paymentmethod_withdraw  = $('#payment_agent_withdraw_link');
-                if (isEuCountry()) {
-                    $('.crypto_currency').setVisibility(0);
-                    $('#payment-agent-section').setVisibility(0);
+                if (!isEuCountry()) {
+                    $('.crypto_currency').setVisibility(1);
+                    $('#payment-agent-section').setVisibility(1);
                 }
 
                 if (is_virtual_account || is_cryptocurrency_account) {
