@@ -203,6 +203,10 @@ const Cashier = (() => {
         });
     };
 
+    const checkStatusIsLocked = ({ status }) => {
+        applyStateLockLogic(status, '.deposit_btn_cashier', '.withdraw_btn_cashier');
+    };
+
     const checkLockStatusPA = () => {
         BinarySocket.wait('get_account_status').then(() => {
             const { status } = State.getResponse('get_account_status');
@@ -263,6 +267,7 @@ const Cashier = (() => {
         if (Client.isLoggedIn()) {
             BinarySocket.send({ statement: 1, limit: 1 });
             BinarySocket.wait('authorize', 'mt5_login_list', 'statement', 'get_account_status', 'landing_company').then(() => {
+                if (!is_virtual) checkStatusIsLocked(State.getResponse('get_account_status'));
                 const residence  = Client.get('residence');
                 const currency   = Client.get('currency');
                 if (is_virtual) {

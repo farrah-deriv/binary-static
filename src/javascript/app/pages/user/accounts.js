@@ -286,7 +286,11 @@ const Accounts = (() => {
     const populateMultiAccount = () => {
         const table_headers = TableHeaders.get();
         const account     = { real: 1 };
-        const handleClick = () => showCurrencyPopUp('create');
+        const has_fiat_account    = Client.hasCurrencyType('fiat');
+        const handleClick = () => {
+            if (has_fiat_account) showCurrencyPopUp('create', '', false, true);
+            else showCurrencyPopUp('create', '', false, false);
+        };
         $(form_id).find('tbody')
             .append($('<tr/>', { id: 'new_account_opening' })
                 .append($('<td/>', { datath: table_headers.account }).html($('<span/>', {
