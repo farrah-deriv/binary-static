@@ -12,6 +12,7 @@ const Dialog           = require('../../common/attach_dom/dialog');
 const BinaryPjax       = require('../../base/binary_pjax');
 const Accounts         = require('../user/accounts');
 const Header           = require('../../base/header');
+const isEuCountry      = require('../../common/country_base').isEuCountry;
 
 const Cashier = (() => {
     let href = '';
@@ -302,9 +303,7 @@ const Cashier = (() => {
                 const el_crypto_withdraw = $('#crypto_withdraw_link');
                 const el_paymentmethod_deposit = $('#payment_agent_deposit_link');
                 const el_paymentmethod_withdraw  = $('#payment_agent_withdraw_link');
-                const is_eu_account = ['iom', 'malta', 'maltainvest'].includes(Client.get('landing_company_shortcode'));
-            
-                if (is_eu_account) {
+                if (isEuCountry()) {
                     $('.crypto_currency').setVisibility(0);
                     $('#payment-agent-section').setVisibility(0);
                 }
