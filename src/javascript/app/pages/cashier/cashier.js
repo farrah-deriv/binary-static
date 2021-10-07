@@ -78,7 +78,7 @@ const Cashier = (() => {
             new_el.class = 'toggle button button-disabled';
             new_el.href = '';
         }
-        el_virtual_topup_info.innerText = localize('Reset the balance of your demo account to [_1] anytime.', [`${Client.get('currency')} 10,000.00`]);
+        el_virtual_topup_info.innerText = localize('Reset the balance of your virtual account to [_1] anytime.', [`${Client.get('currency')} 10,000.00`]);
         $a.replaceWith($('<a/>', new_el));
         $(top_up_id).parent().setVisibility(1);
     };
@@ -302,7 +302,7 @@ const Cashier = (() => {
                 const el_crypto_withdraw = $('#crypto_withdraw_link');
                 const el_paymentmethod_deposit = $('#payment_agent_deposit_link');
                 const el_paymentmethod_withdraw  = $('#payment_agent_withdraw_link');
-                const is_eu_account = ['iom', 'malta'].includes(Client.get('landing_company_shortcode'));
+                const is_eu_account = ['iom', 'malta', 'maltainvest'].includes(Client.get('landing_company_shortcode'));
             
                 if (is_eu_account) {
                     $('.crypto_currency').setVisibility(0);
@@ -373,13 +373,13 @@ const Cashier = (() => {
                 if (has_fiat_account || has_crypto_account){
                     el_paymentmethod_deposit.on('click', () => {
                         BinarySocket.send({ authorize: 1 }).then(() => {
-                            Accounts.showCurrencyPopUp('switch', 'payment_agent', false, false);
+                            Accounts.showCurrencyPopUp('switch', 'payment_agent_deposit', false, false);
                         });
                         return false;
                     });
                     el_paymentmethod_withdraw.on('click', () => {
                         BinarySocket.send({ authorize: 1 }).then(() => {
-                            Accounts.showCurrencyPopUp('switch', 'payment_agent', false, false);
+                            Accounts.showCurrencyPopUp('switch', 'payment_agent_withdrawal', false, false);
                         });
                         return false;
                     });

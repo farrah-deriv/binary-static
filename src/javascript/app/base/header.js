@@ -129,8 +129,10 @@ const Header = (() => {
             window.location.href = `${Url.urlFor('cashier/forwardws')}?action=deposit`;
         } else if (redirect_to === 'withdrawal') {
             window.location.href = `${Url.urlFor('cashier/forwardws')}?action=withdraw`;
-        } else if (redirect_to === 'payment_agent') {
+        } else if (redirect_to === 'payment_agent_deposit') {
             window.location.href = Url.urlFor('/cashier/payment_agent_listws');
+        } else if (redirect_to === 'payment_agent_withdrawal') {
+            window.location.href = Url.urlFor('/paymentagent/withdrawws');
         } else {
             window.location.reload();
         }
