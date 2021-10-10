@@ -3,16 +3,18 @@ const Currency = require('../../common/currency');
 
 const GetCurrency = (() => {
     const getCurrenciesOfOtherAccounts = (is_different_company = false) => {
-        const all_loginids     = Client.getAllLoginids();
+        const all_loginids     = Client.getAllAccountsObject();
         const other_currencies = [];
         const current_landing_company_shortcode = Client.get('landing_company_shortcode');
-        all_loginids.forEach((loginid) => {
+        Object.keys(all_loginids).forEach((loginid) => {
             // if it's not current client or under a different landing company, consider the currency
-            if (is_different_company) { 
+            if (is_different_company) {
                 if (Client.get('loginid') !== loginid) {
                     const currency = Client.get('currency', loginid);
-                    if (!Client.get('is_virtual', loginid) && currency && !Client.get('is_disabled', loginid)) {
-                        other_currencies.push(currency);
+                    if (!Client.get('is_virtual', loginid) && currency) {
+                        if (!all_loginids[loginid].is_disabled) {
+                            other_currencies.push(currency);
+                        }
                     }
                 }
             } else {
