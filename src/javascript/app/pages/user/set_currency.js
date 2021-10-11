@@ -74,7 +74,7 @@ const SetCurrency = (() => {
                 const action_map = {
                     set_currency   : localize('Set currency'),
                     change_currency: localize('Change currency'),
-                    multi_account  : !all_fiat && !all_crypto ? localize('Create account') : localize('Add account'),
+                    multi_account  : localize('Add account'),
                     switch_account : localize('Continue'),
                 };
 

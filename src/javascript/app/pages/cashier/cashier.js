@@ -223,9 +223,9 @@ const Cashier = (() => {
             ok_text = localize('Switch account');
             localized_title = localize('Switch account?');
             if (transaction_type === 'deposit') {
-                localized_message = localize('To deposit money, please switch to your [_1] account', fiat_account);
+                localized_message = localize('To deposit money, please switch to your [_1] account.', fiat_account);
             } else {
-                localized_message = localize('To withdraw money, please switch to your [_1] account', fiat_account);
+                localized_message = localize('To withdraw money, please switch to your [_1] account.', fiat_account);
             }
         } else {
             ok_text = localize('Switch to crypto account');
