@@ -301,17 +301,23 @@
 }
 
 .crypto_icon {
-    margin-right: 6px;
+    margin-right: 4px;
     width: 72px;
     height: 45px;
 }
 
 .switch-cancel-btn {
     width: calc(30% - 5px) !important;
+    @media screen and (max-width: 768px) {
+        width: calc(40% - 5px) !important;
+    }
 }
 
 .switch-ok-btn {
     width: calc(70% - 5px) !important;
+    @media screen and (max-width: 768px) {
+        width: calc(60% - 5px) !important;
+    }
 }
 
 .charity {
@@ -837,7 +843,7 @@ body #not_authenticated_financial ul.checked > li {
     .currency_list > div {
         padding: 15px;
         background-image: url('../images/pages/set_currency/tick-normal.svg');
-        background-size: auto;
+        background-size: 16px;
         background-repeat: no-repeat;
         background-position: center bottom;
         line-height: 30px;
@@ -903,6 +909,11 @@ body #not_authenticated_financial ul.checked > li {
     .button span {
         @media screen and (min-width: 768px) {
             width: 10em;
+        }
+    }
+    #btn_ok {
+        @media screen and (max-width: 768px) {
+            width: 8em;
         }
     }
 }

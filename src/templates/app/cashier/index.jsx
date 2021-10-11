@@ -120,8 +120,8 @@ const Cashier = () => (
             </div>
         </div>
 
-        <SeparatorLine className='gr-padding-30 client_virtual invisible' />
-        
+        <SeparatorLine className='gr-padding-10 client_virtual invisible' />
+
         <div className='gr-padding-10 table-body normal_currency'>
             <h3 className='gr-padding-10'>
                 <span className='client_virtual'>{it.L('Deposit via bank wire, credit card, and e-wallet')}</span>
