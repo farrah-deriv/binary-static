@@ -306,17 +306,16 @@
     height: 45px;
 }
 
-.switch-cancel-btn {
-    width: calc(30% - 5px) !important;
-    @media screen and (max-width: 768px) {
-        width: calc(40% - 5px) !important;
-    }
-}
+#frm_confirm {
+    display: flex;
+    align-items: end;
 
-.switch-ok-btn {
-    width: calc(70% - 5px) !important;
-    @media screen and (max-width: 768px) {
-        width: calc(60% - 5px) !important;
+    .switch-cancel-btn {
+        width: unset !important;
+    }
+    .switch-ok-btn {
+        width: unset !important;
+        flex: 1;
     }
 }
 
@@ -900,21 +899,24 @@ body #not_authenticated_financial ul.checked > li {
         margin-bottom: 0;
     }
     #submit_section {
-        margin-top: 20px;
-        margin-bottom: 16px;
+        border: 0;
+        display: flex;
+        max-width: 24em;
+        margin: 20px auto 16px;
     }
-    #deposit_btn {
-        margin-bottom: 16px;
-    }
-    .button span {
+    .btn_cancel {
         @media screen and (min-width: 768px) {
-            width: 10em;
+            flex: 1;
         }
     }
     #btn_ok {
-        @media screen and (max-width: 768px) {
-            width: 8em;
-        }
+        flex: 1;
+    }
+    .button span {
+        display: block;
+    }
+    #deposit_btn {
+        margin-bottom: 16px;
     }
 }
 

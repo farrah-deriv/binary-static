@@ -157,7 +157,7 @@ const SetCurrency = (() => {
         const $fiat_currencies  = $('<div/>');
         const $cryptocurrencies = $('<div/>');
         currencies.forEach((c) => {
-            const $wrapper = $('<div/>', { class: 'gr-3 gr-6-m currency_wrapper', id: c });
+            const $wrapper = $('<div/>', { class: 'gr-3 gr-4-m currency_wrapper', id: c });
             const $image   = $('<div/>').append($('<img/>', { src: Url.urlForStatic(`images/pages/set_currency/${c.toLowerCase()}.svg`) }));
             const $name    = $('<div/>', { class: 'currency-name' });
             const $display_name = $('<span/>', {
@@ -193,7 +193,7 @@ const SetCurrency = (() => {
             }
 
             if (has_upgrade){
-                const $add_wrapper = $('<div/>', { class: 'gr-3 gr-6-m currency_wrapper', id: 'NEW' });
+                const $add_wrapper = $('<div/>', { class: 'gr-3 gr-4-m currency_wrapper', id: 'NEW' });
                 const $add_image   = $('<div/>').append($('<img/>',  { src: Url.urlForStatic('images/pages/set_currency/add.svg') }));
                 const $add_name    = $('<div/>', { class: 'currency-name' });
                 
