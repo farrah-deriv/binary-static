@@ -68,7 +68,7 @@ const SetCurrency = (() => {
                 }
 
                 $(`.show_${popup_action}`).setVisibility(1);
-                populateCurrencies(currencies, all_crypto);
+                populateCurrencies(landing_company, currencies, all_crypto);
                 onSelection($currency_list, $error, false);
 
                 const action_map = {
@@ -96,7 +96,7 @@ const SetCurrency = (() => {
             return;
         }
 
-        populateCurrencies(getAvailableCurrencies(landing_company, payout_currencies), all_crypto);
+        populateCurrencies(landing_company, getAvailableCurrencies(landing_company, payout_currencies), all_crypto);
 
         onSelection($currency_list, $error, true);
     };
@@ -153,7 +153,7 @@ const SetCurrency = (() => {
         );
     };
 
-    const populateCurrencies = (currencies, all_crypto) => {
+    const populateCurrencies = (landing_company, currencies, all_crypto) => {
         const $fiat_currencies  = $('<div/>');
         const $cryptocurrencies = $('<div/>');
         currencies.forEach((c) => {
@@ -186,6 +186,7 @@ const SetCurrency = (() => {
         let crypto_currencies = '';
         const upgrade_info        = Client.getUpgradeInfo();
         const has_upgrade         = upgrade_info.can_upgrade || upgrade_info.can_open_multi;
+        let show_add_account      = false;
              
         if (popup_action === 'switch_account') {
             if (fiat_currencies) {
@@ -196,15 +197,21 @@ const SetCurrency = (() => {
                 const $add_wrapper = $('<div/>', { class: 'gr-3 gr-4-m currency_wrapper', id: 'NEW' });
                 const $add_image   = $('<div/>').append($('<img/>',  { src: Url.urlForStatic('images/pages/set_currency/add.svg') }));
                 const $add_name    = $('<div/>', { class: 'currency-name' });
-                
+                const available_crypto = getOtherCurrencies(landing_company, false, true);
+
                 if (all_crypto) {
-                    $add_name.text(localize('Add new crypto account'));
+                    if (available_crypto.length > 0) {
+                        $add_name.text(localize('Add new crypto account'));
+                        $add_wrapper.append($add_image).append($add_name);
+                        $cryptocurrencies.append($add_wrapper);
+                        show_add_account = true;
+                    }
                 } else {
                     $add_name.text(localize('Add new account'));
+                    $add_wrapper.append($add_image).append($add_name);
+                    $cryptocurrencies.append($add_wrapper);
+                    show_add_account = true;
                 }
-
-                $add_wrapper.append($add_image).append($add_name);
-                $cryptocurrencies.append($add_wrapper);
             }
 
             crypto_currencies = $cryptocurrencies.html();
@@ -222,6 +229,8 @@ const SetCurrency = (() => {
             if (crypto_currencies) {
                 $('#crypto_currencies').setVisibility(1);
                 $('#crypto_currency_list').html(crypto_currencies).parent().setVisibility(1);
+            } else {
+                $('#crypto_currency_list').setVisibility(0);
             }
         }
 
@@ -235,14 +244,20 @@ const SetCurrency = (() => {
                     $('#set_currency_text_note').text(localize('You can open an account for each cryptocurrency.'));
                 } else if (fiat_currencies && !crypto_currencies) {
                     $('#set_currency_text').setVisibility(0);
+                    $('#set_currency_text_secondary').setVisibility(0);
                 }
             } else if (popup_action === 'switch_account') {
-                if (all_crypto) {
-                    $('#set_currency_text').text(localize('Choose a cryptocurrency account'));
-                    $('#set_currency_text_secondary').text(localize('Choose one of your accounts or add a new cryptocurrency account'));
+                if (show_add_account) {
+                    if (all_crypto) {
+                        $('#set_currency_text').text(localize('Choose a cryptocurrency account'));
+                        $('#set_currency_text_secondary').text(localize('Choose one of your accounts or add a new cryptocurrency account'));
+                    } else {
+                        $('#set_currency_text').text(localize('Choose an account'));
+                        $('#set_currency_text_secondary').text(localize('Choose one of your accounts or add a new account'));
+                    }
                 } else {
                     $('#set_currency_text').text(localize('Choose an account'));
-                    $('#set_currency_text_secondary').text(localize('Choose one of your accounts or add a new account'));
+                    $('#set_currency_text_secondary').text(localize('Choose one of your accounts'));
                 }
             } else if (popup_action === 'change_currency') {
                 $('#fiat_currencies').find('.text').setVisibility(0);
@@ -250,8 +265,13 @@ const SetCurrency = (() => {
                 $('#set_currency_text').text(localize('Please select the currency for this account:'));
             }
         } else if (popup_action === 'switch_account') {
-            $('#set_currency_text').text(localize('Choose an account'));
-            $('#set_currency_text_secondary').text(localize('Choose one of your accounts or add a new account'));
+            if (show_add_account) {
+                $('#set_currency_text').text(localize('Choose an account'));
+                $('#set_currency_text_secondary').text(localize('Choose one of your accounts or add a new account'));
+            } else {
+                $('#set_currency_text').text(localize('Choose an account'));
+                $('#set_currency_text_secondary').text(localize('Choose one of your accounts'));
+            }
         } else {
             $('#set_currency_text').setVisibility(0);
             $('#set_currency_text_secondary').setVisibility(0);
