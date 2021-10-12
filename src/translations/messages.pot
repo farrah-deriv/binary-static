@@ -3436,6 +3436,9 @@ msgstr ""
 msgid "Create or Manage Accounts"
 msgstr ""
 
+msgid "Create or reset password"
+msgstr ""
+
 msgid "Create strategies against potential risks that might arise due to disruptive innovation"
 msgstr ""
 
@@ -5471,6 +5474,9 @@ msgid "Go long and short"
 msgstr ""
 
 msgid "Go short = sell"
+msgstr ""
+
+msgid "Go to DTrader"
 msgstr ""
 
 msgid "Go to MT5 download page"
@@ -13681,7 +13687,7 @@ msgstr ""
 msgid "Usage limit"
 msgstr ""
 
-msgid "Use MT5 password to sign in to any of your CFDs accounts when using MT5 apps on your mobile or other devices."
+msgid "Use MT5 password to sign in to any of your MT5 accounts when using MT5 apps on your mobile or other devices."
 msgstr ""
 
 msgid "Use a few words, avoid common phrases"

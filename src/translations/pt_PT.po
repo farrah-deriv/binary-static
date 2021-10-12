@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: binary-static\n"
 "POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"PO-Revision-Date: 2021-10-10 13:36\n"
+"PO-Revision-Date: 2021-10-12 08:50\n"
 "Last-Translator: \n"
 "Language-Team: Portuguese\n"
 "MIME-Version: 1.0\n"
@@ -3461,6 +3461,9 @@ msgstr "Criar um novo token"
 msgid "Create or Manage Accounts"
 msgstr "Crie ou Gerencie suas contas"
 
+msgid "Create or reset password"
+msgstr ""
+
 msgid "Create strategies against potential risks that might arise due to disruptive innovation"
 msgstr "Criar estratégias contra os riscos potenciais que possam surgir devido a inovação disruptiva"
 
@@ -5509,6 +5512,9 @@ msgstr "Assumir posição longa e curta"
 
 msgid "Go short = sell"
 msgstr "Assumir posição curta = vender"
+
+msgid "Go to DTrader"
+msgstr ""
 
 msgid "Go to MT5 download page"
 msgstr "Ir à página de download da MT5"
@@ -13738,7 +13744,7 @@ msgstr "Após a expiração ou rescisão deste Contrato, por qualquer motivo, to
 msgid "Usage limit"
 msgstr "Limite de utilização"
 
-msgid "Use MT5 password to sign in to any of your CFDs accounts when using MT5 apps on your mobile or other devices."
+msgid "Use MT5 password to sign in to any of your MT5 accounts when using MT5 apps on your mobile or other devices."
 msgstr ""
 
 msgid "Use a few words, avoid common phrases"

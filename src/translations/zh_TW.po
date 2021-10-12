@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: binary-static\n"
 "POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"PO-Revision-Date: 2021-10-11 09:42\n"
+"PO-Revision-Date: 2021-10-12 08:50\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Traditional\n"
 "MIME-Version: 1.0\n"
@@ -3451,6 +3451,9 @@ msgstr "新增新權杖"
 msgid "Create or Manage Accounts"
 msgstr "開立或管理帳戶"
 
+msgid "Create or reset password"
+msgstr "建立或重設密碼"
+
 msgid "Create strategies against potential risks that might arise due to disruptive innovation"
 msgstr "針對因破壞性創新而可能產生的潛在風險制定策略"
 
@@ -5487,6 +5490,9 @@ msgstr "多頭和空頭頭寸"
 
 msgid "Go short = sell"
 msgstr "空頭頭寸 = 賣出"
+
+msgid "Go to DTrader"
+msgstr "前往 DTrader"
 
 msgid "Go to MT5 download page"
 msgstr "前往 MT5 下載頁面"
@@ -13696,8 +13702,8 @@ msgstr "本協議到期或終止時（不論是什麼原因），所有通過本
 msgid "Usage limit"
 msgstr "使用限制"
 
-msgid "Use MT5 password to sign in to any of your CFDs accounts when using MT5 apps on your mobile or other devices."
-msgstr "在手機或其他裝置使用MT5應用時使用 MT5 密碼登入任何差價合約帳戶。"
+msgid "Use MT5 password to sign in to any of your MT5 accounts when using MT5 apps on your mobile or other devices."
+msgstr ""
 
 msgid "Use a few words, avoid common phrases"
 msgstr "用幾個詞，避免常用短語"

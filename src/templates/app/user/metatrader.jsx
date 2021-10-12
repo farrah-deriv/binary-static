@@ -146,8 +146,8 @@ const Metatrader = () => (
                 <div className='mt-panel'>
                     <div className='acc-actions'>
                         <a href='javascript:;' className='act_new_account new-account center-text invisible'>
-                            <span className='client-general'>{it.L('Create a MetaTrader 5 account')}</span>
-                            <span className='client-eu invisible'>{it.L('Create a CFDs account')}</span>
+                            <span data-show='-eucountry'>{it.L('Create a MetaTrader 5 account')}</span>
+                            <span data-show='eucountry'>{it.L('Create a CFDs account')}</span>
                         </a>
                         <a href='javascript:;' className='act_cashier has-account center-text invisible'>
                             <span>{it.L('Manage funds')}</span>
@@ -305,8 +305,8 @@ const Metatrader = () => (
                             <div id='view_3' className='gr-row invisible'>
                                 <div className='container gr-12'>
                                     <p id='trading_password_new_user' className='center-text notice-msg invisible'>
-                                        <span className='client-general'>{it.L('Create an MT5 password. You can use this password for all your MT5 accounts.')}</span>
-                                        <span className='client-eu invisible'>{it.L('Create an MT5 password for logging in to your CFDs account.')}</span>
+                                        <span data-show='-eucountry'>{it.L('Create an MT5 password. You can use this password for all your MT5 accounts.')}</span>
+                                        <span data-show='eucountry'>{it.L('Create an MT5 password for logging in to your CFDs account.')}</span>
                                     </p>
                                     <p id='trading_password_new_user_confirm' className='center-text notice-msg invisible'>
                                         {it.L('Confirm to create your MT5 password')}
@@ -403,7 +403,7 @@ const Metatrader = () => (
                                         <div className='step-1'>
                                             <h3 className='password_change_title secondary-color'>{it.L('You have a trading password for MT5')}</h3>
                                             <p className='notice-msg center-text font-n'>
-                                                {it.L('Use MT5 password to sign in to any of your CFDs accounts when using MT5 apps on your mobile or other devices.')}
+                                                {it.L('Use MT5 password to sign in to any of your MT5 accounts when using MT5 apps on your mobile or other devices.')}
                                             </p>
                                             {/* TODO: temporary invisible. refactor this when design is updated */}
                                             <div id='dummy_password' className='gr-row form-row center-text-m two-rows dummy-password invisible'>
@@ -473,6 +473,16 @@ const Metatrader = () => (
                                         text={it.L('Change investor password')}
                                         attributes={{ action: 'password_change' }}
                                     />
+                                </form>
+                                <form className='invisible' id='frm_verify_password_reset'>
+                                    <p className='center-text notice-msg no-margin invisible' id='token_error'>{it.L('Verification code is wrong. Please use the link sent to your email.')}</p>
+                                    <button
+                                        type='submit'
+                                        className='button-secondary button-full-width'
+                                        action='verify_password_reset'
+                                    >
+                                        {it.L('Create or reset password')}
+                                    </button>
                                 </form>
                                 <form className='invisible' id='frm_verify_password_reset_token'>
                                     <div className='gr-padding-10'>
