@@ -85,12 +85,15 @@ button.button-disabled {
     color: $COLOR_GRAY;
     background: $COLOR_LIGHT_GRAY;
     cursor: default;
-    pointer-events: none;
 
     &:hover {
         color: $COLOR_GRAY;
         background: $COLOR_LIGHT_GRAY;
     }
+}
+
+a.button-disabled {
+    pointer-events: none;
 }
 
 span.checked {
